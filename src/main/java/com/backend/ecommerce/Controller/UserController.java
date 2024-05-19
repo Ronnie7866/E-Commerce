@@ -1,5 +1,6 @@
-package com.backend.ecommerce.controller;
+package com.backend.ecommerce.Controller;
 
+import com.backend.ecommerce.Entity.Product;
 import com.backend.ecommerce.Entity.User;
 import com.backend.ecommerce.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,11 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/{userId}/cart")
+    public ResponseEntity<Void> addProductToCart(@PathVariable int userId, @RequestBody Product product) {
+        userService.addProductToUserCart(userId, product);
+        return ResponseEntity.ok().build();
     }
 }
