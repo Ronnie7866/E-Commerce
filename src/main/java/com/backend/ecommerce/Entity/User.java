@@ -26,9 +26,17 @@ public class User {
 ////            (targetEntity = Cart.class)
 //    private Cart cart;
 
+<<<<<<< HEAD
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<Cart> carts = new HashSet<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
+=======
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Cart> carts = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Transaction> transaction = new HashSet<>();
+>>>>>>> 336217174f33ee6b87076c271afbf4b52b73bd80
 }
