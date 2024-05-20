@@ -3,17 +3,17 @@ package com.backend.ecommerce.Controller;
 
 import com.backend.ecommerce.Entity.Product;
 import com.backend.ecommerce.Service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
 
     @PostMapping

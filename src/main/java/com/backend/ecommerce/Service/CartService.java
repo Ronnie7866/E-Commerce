@@ -8,6 +8,9 @@ import com.backend.ecommerce.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @AllArgsConstructor
 public class CartService {
@@ -17,13 +20,17 @@ public class CartService {
     private ProductRepository productRepository;
     private CartItemRepository cartItemRepository;
 
-    public void addProductToCart(Long userId, Long productId, Integer quantity) {
+    public String addProductToCart(Long userId, Long productId, Integer quantity) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
-        Cart cart = user.getCarts().stream().findFirst().orElse(new Cart());
-        cart.setUser(user);
-        user.getCarts().add(cart);
+        Cart cart = user.getCart();
+
+        if(Objects.isNull(cart)){
+            cart = new Cart();
+            user.setCart(cart);
+            cart.setUser(user);
+        }
 
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
@@ -34,5 +41,11 @@ public class CartService {
 
         cartRepository.save(cart);
         cartItemRepository.save(cartItem);
+
+        return "Done";
+    }
+
+    public List<Cart> getAllCarts() {
+        return cartRepository.findAll();
     }
 }
