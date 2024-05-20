@@ -21,6 +21,7 @@ public class UserService {
     private ProductRepository productRepository;
     private CartItemRepository cartItemRepository;
 
+
     public User createUser(User user) {
 //        Cart cart = cartRepository.save(new Cart());
 //        user.setCarts(cart);
@@ -37,12 +38,11 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        User newUser = userRepository.findById(user.getId()).get();
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
-        return userRepository.save(newUser);
+        User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User Not Found with ID: " + user.getId()));
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(Long id) {
