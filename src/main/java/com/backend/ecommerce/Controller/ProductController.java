@@ -45,4 +45,9 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("arib")
+    public void aribfunction(){
+        System.out.println("AribFunction");
+    }
+
 }
