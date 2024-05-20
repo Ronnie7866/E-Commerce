@@ -21,19 +21,19 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(int id) {
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
-    public Product updateProduct(int id, Product product) {
+    public Product updateProduct(Long id, Product product) {
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        existingProduct.setProductId(product.getProductId());
-        existingProduct.setProductName(product.getProductName());
-        existingProduct.setProductPrice(product.getProductPrice());
+        existingProduct.setId(product.getId());
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
         return productRepository.save(existingProduct);
     }
 
-    public Product deleteProduct(int id) {
+    public Product deleteProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         productRepository.deleteById(id);
         return product;
