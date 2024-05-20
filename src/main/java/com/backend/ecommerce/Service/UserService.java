@@ -6,24 +6,19 @@ import com.backend.ecommerce.Entity.User;
 import com.backend.ecommerce.Repository.CartRepository;
 import com.backend.ecommerce.Repository.ProductRepository;
 import com.backend.ecommerce.Repository.UserRepository;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
+
     UserRepository userRepository;
-
-    @Autowired
     CartRepository cartRepository;
-
-    @Autowired
     ProductRepository productRepository;
 
     public User createUser(User user) {
@@ -40,13 +35,13 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        User newUser = userRepository.findById(user.getId()).get();
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
-        return userRepository.save(newUser);
+        User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User Not Found with ID: " + user.getId()));
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        return userRepository.save(existingUser);
     }
+
 
     public void deleteUser(int id) {
         userRepository.deleteById(id);
