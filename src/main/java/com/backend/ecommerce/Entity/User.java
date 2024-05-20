@@ -1,6 +1,7 @@
 package com.backend.ecommerce.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,12 +22,10 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-
 //    @OneToOne
 ////            (targetEntity = Cart.class)
 //    private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Cart> carts = new HashSet<>();
-
 }
