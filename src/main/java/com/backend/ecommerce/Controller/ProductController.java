@@ -45,4 +45,9 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/hel")
+    public String hel() {
+        return "Hello World";
+    }
+
 }
