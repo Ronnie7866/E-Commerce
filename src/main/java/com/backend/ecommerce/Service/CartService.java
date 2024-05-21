@@ -6,6 +6,7 @@ import com.backend.ecommerce.Repository.CartRepository;
 import com.backend.ecommerce.Repository.ProductRepository;
 import com.backend.ecommerce.Repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CartService {
 
     private UserRepository userRepository;
@@ -29,18 +31,27 @@ public class CartService {
         if(Objects.isNull(cart)){
             cart = new Cart();
             user.setCart(cart);
-            cart.setUser(user);
         }
 
-        CartItem cartItem = new CartItem();
-        cartItem.setCart(cart);
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
+        User u = userRepository.save(user);
 
-        cart.getCartItems().add(cartItem);
+        System.out.println(u);
 
-        cartRepository.save(cart);
-        cartItemRepository.save(cartItem);
+        cart.setUser(u);
+
+//        Cart c = cartRepository.save(cart);
+//
+//        System.out.println(c);
+
+//        CartItem cartItem = new CartItem();
+//        cartItem.setCart(cart);
+//        cartItem.setProduct(product);
+//        cartItem.setQuantity(quantity);
+//
+//        cart.getCartItems().add(cartItem);
+
+
+//        cartItemRepository.save(cartItem);
 
         return "Done";
     }
