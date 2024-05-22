@@ -21,9 +21,9 @@ public class Product {
     private String name;
     private Double price;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> cartItems = new HashSet<>();
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<CartItem> cartItems = new HashSet<>();
 
 }
 

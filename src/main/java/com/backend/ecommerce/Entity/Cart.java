@@ -1,5 +1,6 @@
 package com.backend.ecommerce.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,23 +15,25 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-//    @OneToMany
-//    List<Product> products = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+//    @JsonIgnore
+    @OneToOne
     private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonIgnore
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //removed , cascade = CascadeType.ALL
     private Set<CartItem> cartItems = new HashSet<>();
 
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", user=" + user.getId() +
+                ", cartItems=" + " cartItems value omitted " +
+                '}';
+    }
 }
