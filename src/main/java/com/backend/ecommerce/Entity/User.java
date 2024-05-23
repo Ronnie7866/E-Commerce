@@ -1,14 +1,13 @@
 package com.backend.ecommerce.Entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +23,10 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private Long defaultPhoneNumber;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PhoneNumber> phoneNumbers;
+
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private Cart cart;
@@ -43,5 +46,4 @@ public class User {
                 ", cart=" + (cart==null? null : cart)  +
                 '}';
     }
-
 }
