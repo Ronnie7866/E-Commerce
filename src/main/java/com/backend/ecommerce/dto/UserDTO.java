@@ -1,9 +1,8 @@
 package com.backend.ecommerce.dto;
 
 
+import com.backend.ecommerce.Entity.Address;
 import com.backend.ecommerce.Entity.Cart;
-import com.backend.ecommerce.Entity.PhoneNumber;
-import com.backend.ecommerce.Entity.Transaction;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,7 @@ public class UserDTO {
     private String lastName;
     private String email;
     private Long defaultPhoneNumber;
-    private List<PhoneNumber> phoneNumbers;
+    private List<Address> addressList;
     private Cart cart;
 //    private List<Transaction> transaction;
 

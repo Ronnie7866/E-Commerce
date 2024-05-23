@@ -1,20 +1,23 @@
 package com.backend.ecommerce.Entity;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class PhoneNumber {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long number;
+    private Long phoneNumber;
     private String areaCode;
     private String city;
     private String country;
-    PhoneType phoneType;
+    @Enumerated(EnumType.STRING)
+    private PhoneType phoneType;
     @ManyToOne
+    @JsonIgnore
     private User user;
 }

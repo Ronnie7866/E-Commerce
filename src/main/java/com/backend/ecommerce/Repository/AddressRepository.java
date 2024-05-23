@@ -1,9 +1,9 @@
 package com.backend.ecommerce.Repository;
 
-import com.backend.ecommerce.Entity.PhoneNumber;
+import com.backend.ecommerce.Entity.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
 }

@@ -1,17 +1,17 @@
 
 package com.backend.ecommerce.Controller;
 
-import com.backend.ecommerce.Entity.PhoneNumber;
+import com.backend.ecommerce.Entity.Address;
 import com.backend.ecommerce.Entity.User;
-import com.backend.ecommerce.Service.PhoneNumberService;
+import com.backend.ecommerce.Repository.AddressRepository;
+import com.backend.ecommerce.Service.AddressService;
 import com.backend.ecommerce.Service.UserService;
-import com.backend.ecommerce.dto.UserDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,7 +20,8 @@ public class UserController {
 
 
     private final UserService userService;
-    private final PhoneNumberService phoneNumberService;
+    private final AddressService addressService;
+    private final AddressRepository addressRepository;
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -58,10 +59,5 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<UserDTO> deletePhoneNumberById(@RequestBody UserDTO userDTO) {
-
     }
 }
