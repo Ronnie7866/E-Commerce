@@ -40,16 +40,22 @@ public class CartService {
 
         Optional<CartItem> existingCartItemOpt = Optional.empty();
 
+        //if Cart is present
         if(!Objects.isNull(cart)) {
             existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
         }
-        if (existingCartItemOpt.isPresent()) {
-            cartItem = existingCartItemOpt.get();
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        }
-        else {
+        else{
             cart = new Cart();
             cart.setUser(user);
+        }
+
+        //if product is present
+        if (existingCartItemOpt.isPresent()) {
+            cartItem = existingCartItemOpt.get();
+            cartItem.setQuantity(quantity);
+        }
+        //if product is not present
+        else {
             cartItem = new CartItem();
             cartItem.setCart(cart);
             cartItem.setProduct(product);
@@ -68,5 +74,15 @@ public class CartService {
 
     public Cart getCart(Long cartId) {
         return cartRepository.findById(cartId).get();
+    }
+
+    public List<CartItem> getCartItemsByUserId(Long userId) {
+        Optional<Cart> cartOpt = cartRepository.findByUserId(userId);
+        if(cartOpt.isEmpty()) {
+            throw new RuntimeException("Not Present");
+        }
+        Long cartId = cartOpt.get().getId();
+
+        return cartItemRepository.findAllByCartId(cartId); //findAllByCart(cart);
     }
 }
