@@ -33,8 +33,8 @@ public class User {
     @JsonIgnore
     private Cart cart;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<Transaction> transaction = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Transaction> transaction = new ArrayList<>();
 
 
     @Override
