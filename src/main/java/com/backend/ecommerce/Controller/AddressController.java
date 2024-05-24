@@ -2,28 +2,27 @@ package com.backend.ecommerce.Controller;
 
 
 import com.backend.ecommerce.Entity.Address;
-import com.backend.ecommerce.Entity.User;
 import com.backend.ecommerce.Repository.AddressRepository;
-import com.backend.ecommerce.Repository.UserRepository;
 import com.backend.ecommerce.Service.AddressService;
+import com.backend.ecommerce.Service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/address")
 @AllArgsConstructor
 public class AddressController {
 
-    private final UserRepository userRepository;
-    private AddressService addressService;
+    private final UserService userService;
+    private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
-    @PostMapping
-    public ResponseEntity<Address> createAddress(@RequestBody Address address) {
-        Address save = addressService.save(address);
+    @PostMapping("/{userId}")
+    public ResponseEntity<Address> createAddress(@PathVariable Long userId, @RequestBody Address address) {
+        Address save = addressService.save(userId, address);
         return ResponseEntity.ok().body(save);
     }
 
@@ -34,8 +33,8 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
-        Address address = addressService.getAddressById(id);
+    public ResponseEntity<Address> getAddressByUserId(@PathVariable Long id) {
+        Address address = addressService.getAddressByUserId(id);
         return ResponseEntity.ok().body(address);
     }
 
@@ -46,9 +45,9 @@ public class AddressController {
         return ResponseEntity.ok("Address is deleted");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Address> updateAddress(@RequestBody Address address, @PathVariable Long id) {
-        Address address1 = addressService.updateAddressById(address, id);
+    @PutMapping("/{userId}")
+    public ResponseEntity<Address> updateAddressByUserId(@RequestBody Address address, @PathVariable Long userId) {
+        Address address1 = addressService.updateAddressByUserId(address, userId);
         return ResponseEntity.ok().body(address1);
     }
 }

@@ -17,7 +17,7 @@ public class Address {
     private String country;
     @Enumerated(EnumType.STRING)
     private PhoneType phoneType;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User user;
 }
