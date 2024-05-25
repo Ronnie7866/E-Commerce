@@ -60,4 +60,16 @@ public class UserController {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<User> signup(@RequestBody User user) {
+        User savedUser = userService.register(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
+        userService.login(email, password);
+        return ResponseEntity.ok(userService.getUserByEmail(email));
+    }
 }

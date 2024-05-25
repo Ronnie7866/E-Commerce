@@ -53,4 +53,19 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public User register(User user) {
+        user.setPassword(user.getPassword());
+        user.setEmail(user.getEmail());
+        return userRepository.save(user);
+    }
+
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user.getPassword().equals(password)) {
+            return user;
+        } else {
+            throw new RuntimeException("Wrong Password");
+        }
+    }
 }

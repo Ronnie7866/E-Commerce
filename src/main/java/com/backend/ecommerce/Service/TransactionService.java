@@ -2,18 +2,18 @@ package com.backend.ecommerce.Service;
 
 import com.backend.ecommerce.Entity.Transaction;
 import com.backend.ecommerce.Repository.TransactionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
 public class TransactionService {
-
-    @Autowired
+    
     TransactionRepository transactionRepository;
 
     public List<Transaction> getAllTransactions() {

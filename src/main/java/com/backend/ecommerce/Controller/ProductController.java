@@ -1,12 +1,15 @@
 package com.backend.ecommerce.Controller;
 
 
+import com.backend.ecommerce.Entity.Category;
 import com.backend.ecommerce.Entity.Product;
+import com.backend.ecommerce.Service.CategoryService;
 import com.backend.ecommerce.Service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,7 +17,8 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
+    private final CategoryService categoryService;
 
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
@@ -50,4 +54,16 @@ public class ProductController {
         System.out.println("AribFunction");
     }
 
+    @PostMapping("/mapCategory")
+    public ResponseEntity<Product> assingProductWithCategory(@RequestParam Long productId, @RequestParam Long categoryId) {
+        Product product = productService.assignCategoryToProduct(productId, categoryId);
+        return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/getProductByCategory/{id}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long id) {
+        Category category = categoryService.findById(id);
+        List<Product> list = new ArrayList<>(category.getProducts());
+        return ResponseEntity.ok(list);
+    }
 }
