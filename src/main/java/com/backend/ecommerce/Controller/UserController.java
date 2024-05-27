@@ -8,6 +8,8 @@ import com.backend.ecommerce.Service.AddressService;
 import com.backend.ecommerce.Service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +27,6 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        System.out.println("a");
         User savedUser = userService.createUser(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -60,6 +61,7 @@ public class UserController {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<User> signup(@RequestBody User user) {
