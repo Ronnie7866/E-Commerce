@@ -51,7 +51,7 @@ public class UserService {
 
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).get();
     }
 
     public User register(User user) {
@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public User login(String email, String password) {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).get();
         if (user.getPassword().equals(password)) {
             return user;
         } else {
