@@ -1,24 +1,32 @@
 
 package com.backend.ecommerce.Controller;
 
+import com.backend.ecommerce.Entity.Address;
 import com.backend.ecommerce.Entity.User;
+import com.backend.ecommerce.Repository.AddressRepository;
+import com.backend.ecommerce.Service.AddressService;
 import com.backend.ecommerce.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+    private final AddressService addressService;
+    private final AddressRepository addressRepository;
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        System.out.println("a");
         User savedUser = userService.createUser(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -52,5 +60,18 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
+    }
+
+
+    @PostMapping("/signup")
+    public ResponseEntity<User> signup(@RequestBody User user) {
+        User savedUser = userService.register(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
+        userService.login(email, password);
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 }

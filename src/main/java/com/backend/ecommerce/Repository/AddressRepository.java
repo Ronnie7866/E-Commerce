@@ -1,12 +1,12 @@
 package com.backend.ecommerce.Repository;
 
+import com.backend.ecommerce.Entity.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.backend.ecommerce.Entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+public interface AddressRepository extends JpaRepository<Address, Long> {
+    public Optional<Address> findByUserId(Long user_id);
 }

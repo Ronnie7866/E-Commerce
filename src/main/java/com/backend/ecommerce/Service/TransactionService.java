@@ -2,18 +2,18 @@ package com.backend.ecommerce.Service;
 
 import com.backend.ecommerce.Entity.Transaction;
 import com.backend.ecommerce.Repository.TransactionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
 public class TransactionService {
-
-    @Autowired
+    
     TransactionRepository transactionRepository;
 
     public List<Transaction> getAllTransactions() {
@@ -25,8 +25,8 @@ public class TransactionService {
     }
 
     public Transaction saveTransaction(Transaction transaction) {
-        transaction.setTransaction_date(LocalDateTime.now().toLocalDate());
-        transaction.setTransaction_time(LocalDateTime.now().toLocalTime());
+        transaction.setTransactionDate(LocalDateTime.now().toLocalDate());
+        transaction.setTransactionTime(LocalDateTime.now().toLocalTime());
         return transactionRepository.save(transaction);
     }
 
@@ -39,11 +39,11 @@ public class TransactionService {
         if (byId.isPresent()) {
             Transaction updatedTransaction = transactionRepository.save(transaction);
             updatedTransaction.setTransaction_id(transaction.getTransaction_id());
-            updatedTransaction.setTransaction_amount(transaction.getTransaction_amount());
-            updatedTransaction.setTransaction_date(transaction.getTransaction_date());
-            updatedTransaction.setTransaction_type(transaction.getTransaction_type());
-            updatedTransaction.setTransaction_status(transaction.getTransaction_status());
-            updatedTransaction.setTransaction_time(transaction.getTransaction_time());
+            updatedTransaction.setTransactionAmount(transaction.getTransactionAmount());
+            updatedTransaction.setTransactionDate(transaction.getTransactionDate());
+            updatedTransaction.setTransactionType(transaction.getTransactionType());
+            updatedTransaction.setTransactionStatus(transaction.getTransactionStatus());
+            updatedTransaction.setTransactionTime(transaction.getTransactionTime());
             return transactionRepository.save(updatedTransaction);
         } else {
             throw new RuntimeException("Transaction not found");
