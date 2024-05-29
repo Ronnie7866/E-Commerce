@@ -20,9 +20,6 @@ public class Transaction {
     private String transactionStatus;
     private Double transactionAmount;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Order order;
-
     @OneToMany
     private List<Product> product = new ArrayList<Product>();
 

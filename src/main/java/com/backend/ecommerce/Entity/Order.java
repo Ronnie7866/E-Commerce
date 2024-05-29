@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@Table(name = "`order`")
 public class Order {
 
     @Id

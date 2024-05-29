@@ -8,7 +8,7 @@ public class OrderedProducts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long orderId;
+//    private Long orderId;
     private Long productId;
     private Long quantity;
 
