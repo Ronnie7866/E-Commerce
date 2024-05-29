@@ -1,16 +1,13 @@
 package com.backend.ecommerce.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Data
@@ -24,11 +21,9 @@ public class Product {
 
     private String name;
     private BigDecimal price;
-<<<<<<< HEAD
-=======
     private String description;
     private String imageUrl;
->>>>>>> security-branch
+    private Boolean availability;
 
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

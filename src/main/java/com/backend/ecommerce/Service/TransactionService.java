@@ -38,7 +38,6 @@ public class TransactionService {
         Optional<Transaction> byId = transactionRepository.findById(id);
         if (byId.isPresent()) {
             Transaction updatedTransaction = transactionRepository.save(transaction);
-            updatedTransaction.setTransaction_id(transaction.getTransaction_id());
             updatedTransaction.setTransactionAmount(transaction.getTransactionAmount());
             updatedTransaction.setTransactionDate(transaction.getTransactionDate());
             updatedTransaction.setTransactionType(transaction.getTransactionType());
@@ -49,4 +48,7 @@ public class TransactionService {
             throw new RuntimeException("Transaction not found");
         }
     }
+
+
+
 }

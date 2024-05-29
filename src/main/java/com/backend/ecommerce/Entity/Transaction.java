@@ -13,13 +13,15 @@ import java.util.List;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transaction_id;
-
+    private Long id;
     private LocalDate transactionDate;
     private LocalTime transactionTime;
     private TransactionType transactionType;
     private String transactionStatus;
     private Double transactionAmount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Order order;
 
     @OneToMany
     private List<Product> product = new ArrayList<Product>();
