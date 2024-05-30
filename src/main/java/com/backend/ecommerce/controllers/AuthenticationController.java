@@ -3,6 +3,7 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.authentication.AuthenticationRequest;
 import com.backend.ecommerce.authentication.AuthenticationResponse;
 import com.backend.ecommerce.authentication.RegisterRequest;
+import com.backend.ecommerce.security.JwtService;
 import com.backend.ecommerce.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {

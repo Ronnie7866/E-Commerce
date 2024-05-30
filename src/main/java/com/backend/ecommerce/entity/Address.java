@@ -15,9 +15,16 @@ public class Address {
     private String areaCode;
     private String city;
     private String country;
+
     @Enumerated(EnumType.STRING)
     private PhoneType phoneType;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JoinColumn(name = "buyer_id")
+    private Buyer buyer;
 }
