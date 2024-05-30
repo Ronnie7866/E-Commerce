@@ -1,8 +1,8 @@
 package com.backend.ecommerce.dto;
 
 
-import com.backend.ecommerce.Entity.Address;
-import com.backend.ecommerce.Entity.Cart;
+import com.backend.ecommerce.entity.Address;
+import com.backend.ecommerce.entity.Cart;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,7 +1,7 @@
 package com.backend.ecommerce.dto;
 
-import com.backend.ecommerce.Entity.CartItem;
-import com.backend.ecommerce.Entity.Product;
+import com.backend.ecommerce.entity.CartItem;
+import com.backend.ecommerce.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
