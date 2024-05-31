@@ -6,6 +6,7 @@ import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.service.CategoryService;
 import com.backend.ecommerce.service.ProductService;
 import com.backend.ecommerce.dto.ProductDTO;
+import com.backend.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

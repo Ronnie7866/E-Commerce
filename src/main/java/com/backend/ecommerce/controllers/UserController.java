@@ -21,6 +21,7 @@ public class UserController {
     private final AddressService addressService;
     private final AddressRepository addressRepository;
 
+    //TODO Delete
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User savedUser = userService.createUser(user);
@@ -29,8 +30,8 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        user.setId(id);
-        User updatedUser = userService.updateUser(user);
+//        user.setId(id);
+        User updatedUser = userService.updateUser(id, user);
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -40,6 +41,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    //TODO Late | Pagination | comment
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -52,6 +54,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    //TODO comment
     @GetMapping("/email")
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);

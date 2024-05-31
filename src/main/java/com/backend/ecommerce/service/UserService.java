@@ -37,11 +37,26 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User Not Found with ID: " + user.getId()));
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
+    //TODO take user details from DTO
+    public User updateUser(Long id, User user) {
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found with ID: " + user.getId()));
+
+//        existingUser.setFirstName(user.getFirstName());
+//        existingUser.setLastName(user.getLastName());
+//        existingUser.setEmail(user.getEmail());
+//        existingUser.setPassword(user.getPassword());
+
+        //20 field
+        //dto 10 field
+        //dto 10 field | changed field 1,2,3,4,5,10
+
+        //1
+        //id se existing user -  10 field update - existing modified user save in db
+        //return user
+
+        //2
+        //id se existing user - cehck on every field null/not null - update in db - return
+
         return userRepository.save(existingUser);
     }
 
