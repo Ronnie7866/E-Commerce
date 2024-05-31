@@ -1,5 +1,6 @@
 package com.backend.ecommerce.authentication;
 
+import com.backend.ecommerce.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,4 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
+    private User user;
 }

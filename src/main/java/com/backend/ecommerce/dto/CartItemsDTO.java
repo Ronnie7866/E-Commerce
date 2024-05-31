@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CartItemsDto {
+public class CartItemsDTO {
 
     Long cartItemId;
     Long productId;
@@ -25,7 +25,7 @@ public class CartItemsDto {
     LocalDateTime addedOn;
     String productApiEndpoint;
 
-    public CartItemsDto(CartItem ci){
+    public CartItemsDTO(CartItem ci){
         Product p = ci.getProduct();
         this.cartItemId = ci.getId();
         this.productId = p.getId();

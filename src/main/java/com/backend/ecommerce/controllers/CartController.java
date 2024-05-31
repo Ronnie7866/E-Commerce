@@ -2,7 +2,7 @@ package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.entity.Cart;
 import com.backend.ecommerce.service.CartService;
-import com.backend.ecommerce.dto.CartItemsDto;
+import com.backend.ecommerce.dto.CartItemsDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class CartController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<CartItemsDto> getCartItemsByUserId(@PathVariable Long userId) {
+    public List<CartItemsDTO> getCartItemsByUserId(@PathVariable Long userId) {
         return cartService.getCartItemsByUserId(userId);
     }
 

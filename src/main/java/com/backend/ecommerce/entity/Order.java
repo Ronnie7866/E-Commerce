@@ -1,7 +1,8 @@
 package com.backend.ecommerce.entity;
 
 
-import com.backend.ecommerce.entity.Enum.Status;
+import com.backend.ecommerce.entity.Enum.AvailabilityStatus;
+import com.backend.ecommerce.entity.Enum.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,12 +21,21 @@ public class Order {
     private LocalDateTime orderDate;
     private LocalDateTime updatedAt;
 
+    @Enumerated(EnumType.STRING)
+    private AvailabilityStatus availabilityStatus;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @OneToOne
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Transaction transaction;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @Transient
+    private Long userId;
+
+    @Transient
+    private Long transactionId;
 }

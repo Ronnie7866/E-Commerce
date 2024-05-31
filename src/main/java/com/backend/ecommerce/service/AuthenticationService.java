@@ -31,8 +31,9 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ADMIN)
                 .build();
-        userRepository.save(user);
-        return null; //[TODO] return user
+        User savedUser = userRepository.save(user);
+        return new AuthenticationResponse(jwtService.generateToken(savedUser), savedUser);
+        //[TODO] return user
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

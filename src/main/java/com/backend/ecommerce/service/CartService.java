@@ -5,7 +5,7 @@ import com.backend.ecommerce.repository.CartItemRepository;
 import com.backend.ecommerce.repository.CartRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
-import com.backend.ecommerce.dto.CartItemsDto;
+import com.backend.ecommerce.dto.CartItemsDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -87,7 +87,7 @@ public class CartService {
         return cartRepository.findById(cartId).get();
     }
 
-    public List<CartItemsDto> getCartItemsByUserId(Long userId) {
+    public List<CartItemsDTO> getCartItemsByUserId(Long userId) {
         Optional<Cart> cartOpt = cartRepository.findByUserId(userId);
         if(cartOpt.isEmpty()) {
             throw new RuntimeException("Not Present");
@@ -95,7 +95,7 @@ public class CartService {
         Long cartId = cartOpt.get().getId();
         List<CartItem> cartItemList = cartItemRepository.findAllByCartId(cartId);
         return cartItemList.stream()
-                .map(CartItemsDto::new).toList();
+                .map(CartItemsDTO::new).toList();
 //        return null;
         //findAllByCart(cart);
     }

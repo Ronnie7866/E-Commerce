@@ -4,7 +4,7 @@ import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.repository.CategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
-import com.backend.ecommerce.dto.AddProductDto;
+import com.backend.ecommerce.dto.ProductDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +19,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
 
-    public Product createProduct(AddProductDto apd) {
-//        List<Long> categoryListIds = product.getCategories().stream().map(Category::getId).toList();
+    public Product createProduct(ProductDTO apd) {
         List<Category> categoryList = categoryRepository.findAllById(apd.categoryIds());
         Product newProduct = Product.builder()
                 .name(apd.name())
@@ -28,8 +27,16 @@ public class ProductService {
                 .description(apd.description())
                 .categories(categoryList)
                 .build();
-//        product.setCategories(categoryList);
         return productRepository.save(newProduct);
+    }
+
+    public List<Product> addAll(List<ProductDTO> productDTOS) {
+        List<Product> productList = new ArrayList<>();
+        for (ProductDTO productDTO : productDTOS) {
+            Product product = createProduct(productDTO);
+            productList.add(product);
+        }
+        return productRepository.saveAll(productList);
     }
 
     public List<Product> getAllProducts() {

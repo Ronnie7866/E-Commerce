@@ -5,7 +5,7 @@ import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.service.CategoryService;
 import com.backend.ecommerce.service.ProductService;
-import com.backend.ecommerce.dto.AddProductDto;
+import com.backend.ecommerce.dto.ProductDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +22,16 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody AddProductDto apd) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO apd) {
         System.out.println(apd);
         Product createdProduct = productService.createProduct(apd);
         return ResponseEntity.ok(createdProduct);
+    }
+
+    @PostMapping("/add-all")
+    public ResponseEntity<List<Product>> createListProduct(@RequestBody List<ProductDTO> apd) {
+        List<Product> products = productService.addAll(apd);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping
