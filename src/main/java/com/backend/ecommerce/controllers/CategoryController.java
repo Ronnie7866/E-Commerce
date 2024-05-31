@@ -50,4 +50,10 @@ public class CategoryController {
         String delete = categoryService.delete(id);
         return ResponseEntity.ok("Category deleted successfully");
     }
+
+    @PostMapping("/batch")
+    public ResponseEntity<List<Category>> createCategory(@RequestBody List<Category> category) {
+        List<Category> listOfCategory = categoryService.createListOfCategory(category);
+        return ResponseEntity.ok(listOfCategory);
+    }
 }

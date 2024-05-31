@@ -6,6 +6,7 @@ import com.backend.ecommerce.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,5 +39,9 @@ public class CategoryService {
         existingCategory.setDescription(category.getDescription());
         existingCategory.setProducts(category.getProducts());
         return categoryRepository.save(existingCategory);
+    }
+
+    public List<Category> createListOfCategory(List<Category> categoryList) {
+        return categoryRepository.saveAll(categoryList);
     }
 }
