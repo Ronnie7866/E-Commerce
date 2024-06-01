@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
 
     public List<Category> findAll() {

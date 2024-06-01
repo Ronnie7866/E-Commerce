@@ -2,7 +2,9 @@ package com.backend.ecommerce.service;
 
 import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
+import com.backend.ecommerce.entity.ProductCategory;
 import com.backend.ecommerce.repository.CategoryRepository;
+import com.backend.ecommerce.repository.ProductCategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.dto.ProductDTO;
 import lombok.AllArgsConstructor;
@@ -17,17 +19,22 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final ProductCategoryRepository productCategoryRepository;
 
 
-    public Product createProduct(ProductDTO apd) {
-        List<Category> categoryList = categoryRepository.findAllById(apd.categoryIds());
-        Product newProduct = Product.builder()
-                .name(apd.name())
-                .price(apd.price())
-                .description(apd.description())
-                .categories(categoryList)
-                .build();
-        return productRepository.save(newProduct);
+    public Product createProduct(Product product) {
+        // Save product in MongoDB
+        Product savedProduct = productRepository.save(product);
+
+        // Save mappings in SQL
+        for (Long categoryId : product.getCategoryIds()) {
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.setProductId(savedProduct.getId());
+            productCategory.setCategoryId(categoryId);
+            productCategoryRepository.save(productCategory);
+        }
+
+        return savedProduct;
     }
 
     public List<Product> addAll(List<ProductDTO> productDTOS) {
@@ -44,7 +51,16 @@ public class ProductService {
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        // Get product from MongoDB
+        Product product = productRepository.findById(id).orElse(null);
+
+        if (product != null) {
+            // Get category IDs from the junction table
+            List<Long> categoryIds = productCategoryRepository.findCategoryIdsByProductId(id);
+            product.setCategoryIds(categoryIds);
+        }
+
+        return product;
     }
 
     public Product updateProduct(Long id, Product product) {
