@@ -13,10 +13,10 @@ import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.repository.CartRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
-import com.backend.ecommerce.security.JwtService;
+//import com.backend.ecommerce.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,22 +27,28 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final CustomModelMapper customModelMapper;
-    private final JwtService jwtService;
+//    private final JwtService jwtService;
 
 
-    public AuthenticationResponse createUser (RegisterRequest request) {
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ADMIN)
-                .build();
+//    public AuthenticationResponse createUser (RegisterRequest request) {
+//        var user = User.builder()
+//                .firstName(request.getFirstName())
+//                .lastName(request.getLastName())
+//                .email(request.getEmail())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .role(Role.ADMIN)
+//                .build();
+//        User savedUser = userRepository.save(user);
+//        UserDTO userDTO = customModelMapper.apply(savedUser);
+//        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
+//    }
+
+    public UserDTO createUser(UserDTO userDTO) {
+        User user = customModelMapper.reverse(userDTO);
         User savedUser = userRepository.save(user);
-        UserDTO userDTO = customModelMapper.apply(savedUser);
-        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
+        return customModelMapper.apply(userRepository.save(savedUser));
     }
 
     public UserDTO getUserById(Long id) {
@@ -80,12 +86,12 @@ public class UserService {
         return customModelMapper.apply(userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User with the " + email + " not found")));
     }
 
-    public UserDTO register(UserDTO userDTO) {
-        User user = customModelMapper.reverse(userDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        return customModelMapper.apply(savedUser);
-    }
+//    public UserDTO register(UserDTO userDTO) {
+//        User user = customModelMapper.reverse(userDTO);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        User savedUser = userRepository.save(user);
+//        return customModelMapper.apply(savedUser);
+//    }
 
     public UserDTO login(String email, String password) {
         User user = userRepository.findByEmail(email).get();

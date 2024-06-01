@@ -21,8 +21,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegisterRequest request) {
-        AuthenticationResponse user = userService.createUser(request);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO user = userService.createUser(userDTO);
         return ResponseEntity.ok(user);
     }
 
@@ -59,15 +59,15 @@ public class UserController {
     }
 
 
-    @PostMapping("/signup")
-    public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO) {
-        UserDTO savedUser = userService.register(userDTO);
-        return ResponseEntity.ok(savedUser);
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO) {
+//        UserDTO savedUser = userService.register(userDTO);
+//        return ResponseEntity.ok(savedUser);
+//    }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestParam String email, @RequestParam String password) {
-        userService.login(email, password);
-        return ResponseEntity.ok(userService.getUserByEmail(email));
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<UserDTO> login(@RequestParam String email, @RequestParam String password) {
+//        userService.login(email, password);
+//        return ResponseEntity.ok(userService.getUserByEmail(email));
+//    }
 }
