@@ -2,17 +2,21 @@ package com.backend.ecommerce.service;
 
 
 import com.backend.ecommerce.entity.Category;
+import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.repository.CategoryRepository;
+import com.backend.ecommerce.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CategoryService {
 
+    private final ProductRepository productRepository;
     private CategoryRepository categoryRepository;
 
 
@@ -24,6 +28,10 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found with this id"));
     }
 
+    public List<Category> getCategoryByProductId(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found with this id"));
+        return product.getCategories().stream().toList();
+    }
     public Category create(Category category) {
         return categoryRepository.save(category);
     }

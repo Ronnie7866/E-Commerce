@@ -56,4 +56,10 @@ public class CategoryController {
         List<Category> listOfCategory = categoryService.createListOfCategory(category);
         return ResponseEntity.ok(listOfCategory);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<List<Category>> findListOfCategoryByProductId(@RequestParam Long productId) {
+        List<Category> categoryByProductId = categoryService.getCategoryByProductId(productId);
+        return ResponseEntity.ok(categoryByProductId);
+    }
 }

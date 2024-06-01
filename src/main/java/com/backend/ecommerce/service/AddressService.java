@@ -1,5 +1,6 @@
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.dto.CustomModelMapper;
 import com.backend.ecommerce.dto.UserDTO;
 import com.backend.ecommerce.entity.Address;
 import com.backend.ecommerce.entity.User;
@@ -18,9 +19,10 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
     private final UserService userService;
+    private final CustomModelMapper customModelMapper;
 
     public Address save(Long userId, Address address) {
-        User user = userService.getUserById(userId);
+        User user = customModelMapper.reverse(userService.getUserById(userId));
         if (user == null) {
             throw new NoSuchElementException("No user found with this userId");
         }
@@ -36,7 +38,7 @@ public class AddressService {
 
     public Address updateAddressByUserId(Address address, Long userId) {
         // Fetch the user by ID
-        User user = userService.getUserById(userId);
+        User user = customModelMapper.reverse(userService.getUserById(userId));
 
         // Check if the user exists
         if (user != null) {

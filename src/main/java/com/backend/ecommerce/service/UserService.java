@@ -46,25 +46,19 @@ public class UserService {
     }
 
     public List<UserDTO> getAllUsers() {
-//        List<UserDTO> userDTOList = new ArrayList<>();
-//        List<User> userList = userRepository.findAll();
-//        for (User user : userList) {
-//            UserDTO userDTO = customModelMapper.apply(user);
-//            userDTOList.add(userDTO);
-//        }
-//        return userDTOList;
         return userRepository.findAll().stream().map(customModelMapper).toList();
     }
 
-    //TODO take user details from DTO
     public UserDTO updateUser(Long userId, UserDTO userDTO) {
-        isCustomerExists(userId);
-        isDuplicate(userDTO);
+        if (isDuplicate(userDTO)) {
+            throw new DuplicateEntryException(userDTO.email());
+        }
         User existingUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with this id : " + userId));
         User updatedValues = customModelMapper.reverse(userDTO);
 
-        BeanUtils.copyProperties(updatedValues, existingUser);
+        BeanUtils.copyProperties(updatedValues, existingUser, "id", "password");
         return customModelMapper.apply(userRepository.save(existingUser));
+
     }
 
     public boolean verifyUser(Long userId, String firstName, String lastName, Long phoneNumber) {
@@ -81,10 +75,11 @@ public class UserService {
         return customModelMapper.apply(userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User with the " + email + " not found")));
     }
 
-    public UserDTO register(User user) {
-        user.setPassword(user.getPassword());
-        user.setEmail(user.getEmail());
-        return customModelMapper.apply(userRepository.save(user));
+    public UserDTO register(UserDTO userDTO) {
+        User user = customModelMapper.reverse(userDTO);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(user);
+        return customModelMapper.apply(savedUser);
     }
 
     public UserDTO login(String email, String password) {
@@ -97,10 +92,7 @@ public class UserService {
     }
 
     private boolean isCustomerExists(Long id) {
-        if(!userRepository.existsById(id)){
-            return true;
-        }
-        throw new ResourceNotFoundException("Customer Not Found");
+        return userRepository.existsById(id);
     }
 
     private boolean isDuplicate(UserDTO userDTO) {
