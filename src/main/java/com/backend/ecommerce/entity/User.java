@@ -25,15 +25,6 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
-
-    public User(String firstName, String lastName, String email, Long defaultPhoneNumber, List<Address> addressList) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.defaultPhoneNumber = defaultPhoneNumber;
-        this.addressList = addressList;
-    }
-
     private String email;
     private String password;
     private Long defaultPhoneNumber;
@@ -52,7 +43,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transaction> transaction = new ArrayList<>();
 
-    public User(String s, String s1) {
+    public User(String s, String s1) {}
+
+    public User(String firstName, String lastName, String email, Long defaultPhoneNumber, List<Address> addressList) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.defaultPhoneNumber = defaultPhoneNumber;
+        this.addressList = addressList;
     }
 
 

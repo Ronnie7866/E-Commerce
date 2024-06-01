@@ -1,8 +1,11 @@
 
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.authentication.AuthenticationResponse;
+import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.CustomModelMapper;
 import com.backend.ecommerce.dto.UserDTO;
+import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.exception.DuplicateEntryException;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.repository.CartItemRepository;
@@ -10,34 +13,36 @@ import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.repository.CartRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
+import com.backend.ecommerce.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
-    private final CartItemRepository cartItemRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomModelMapper customModelMapper;
+    private final JwtService jwtService;
 
 
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = customModelMapper.reverse(userDTO);
-        if (isCustomerExists(user.getId()) || isDuplicate(userDTO)) {
-            throw new DuplicateEntryException(userDTO.email());
-        }
-        return customModelMapper.apply(user);
+    public AuthenticationResponse createUser (RegisterRequest request) {
+        var user = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ADMIN)
+                .build();
+        User savedUser = userRepository.save(user);
+        UserDTO userDTO = customModelMapper.apply(savedUser);
+        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
     }
 
     public UserDTO getUserById(Long id) {

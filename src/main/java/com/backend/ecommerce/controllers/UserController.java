@@ -1,6 +1,8 @@
 
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.authentication.AuthenticationResponse;
+import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.UserDTO;
 import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.service.UserService;
@@ -18,11 +20,10 @@ public class UserController {
 
     private final UserService userService;
 
-    //TODO Delete
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO savedUser = userService.createUser(userDTO);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegisterRequest request) {
+        AuthenticationResponse user = userService.createUser(request);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{id}")
