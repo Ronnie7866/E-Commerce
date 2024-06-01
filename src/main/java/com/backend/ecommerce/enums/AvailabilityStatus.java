@@ -1,4 +1,4 @@
-package com.backend.ecommerce.entity.Enum;
+package com.backend.ecommerce.enums;
 
 public enum AvailabilityStatus {
     AVAILABLE,

@@ -1,9 +1,8 @@
 
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dto.UserDTO;
 import com.backend.ecommerce.entity.User;
-import com.backend.ecommerce.repository.AddressRepository;
-import com.backend.ecommerce.service.AddressService;
 import com.backend.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,33 +17,30 @@ public class UserController {
 
 
     private final UserService userService;
-    private final AddressService addressService;
-    private final AddressRepository addressRepository;
 
     //TODO Delete
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO savedUser = userService.createUser(userDTO);
         return ResponseEntity.ok(savedUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-//        user.setId(id);
-        User updatedUser = userService.updateUser(id, user);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = userService.updateUser(id, userDTO);
         return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO userDTO = userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
     }
 
     //TODO Late | Pagination | comment
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
@@ -56,20 +52,20 @@ public class UserController {
 
     //TODO comment
     @GetMapping("/email")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
+        UserDTO userDTO = userService.getUserByEmail(email);
+        return ResponseEntity.ok(userDTO);
     }
 
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody User user) {
-        User savedUser = userService.register(user);
+    public ResponseEntity<UserDTO> signup(@RequestBody User user) {
+        UserDTO savedUser = userService.register(user);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<UserDTO> login(@RequestParam String email, @RequestParam String password) {
         userService.login(email, password);
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }

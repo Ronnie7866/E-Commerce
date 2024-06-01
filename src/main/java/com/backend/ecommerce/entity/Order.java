@@ -1,8 +1,8 @@
 package com.backend.ecommerce.entity;
 
 
-import com.backend.ecommerce.entity.Enum.AvailabilityStatus;
-import com.backend.ecommerce.entity.Enum.OrderStatus;
+import com.backend.ecommerce.enums.AvailabilityStatus;
+import com.backend.ecommerce.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 

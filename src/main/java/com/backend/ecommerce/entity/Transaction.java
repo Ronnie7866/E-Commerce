@@ -1,6 +1,6 @@
 package com.backend.ecommerce.entity;
 
-import com.backend.ecommerce.entity.Enum.TransactionType;
+import com.backend.ecommerce.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -1,5 +1,6 @@
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.dto.UserDTO;
 import com.backend.ecommerce.entity.Address;
 import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.repository.AddressRepository;
@@ -16,7 +17,6 @@ import java.util.Optional;
 public class AddressService {
 
     private final AddressRepository addressRepository;
-    private final UserRepository UserRepository;
     private final UserService userService;
 
     public Address save(Long userId, Address address) {

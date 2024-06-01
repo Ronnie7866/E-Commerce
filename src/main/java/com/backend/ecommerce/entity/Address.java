@@ -1,6 +1,6 @@
 package com.backend.ecommerce.entity;
 
-import com.backend.ecommerce.entity.Enum.PhoneType;
+import com.backend.ecommerce.enums.PhoneType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;

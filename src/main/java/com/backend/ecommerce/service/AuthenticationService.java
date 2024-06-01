@@ -3,7 +3,9 @@ package com.backend.ecommerce.service;
 import com.backend.ecommerce.authentication.AuthenticationRequest;
 import com.backend.ecommerce.authentication.AuthenticationResponse;
 import com.backend.ecommerce.authentication.RegisterRequest;
-import com.backend.ecommerce.entity.Enum.Role;
+import com.backend.ecommerce.dto.CustomModelMapper;
+import com.backend.ecommerce.dto.UserDTO;
+import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.repository.UserRepository;
 import com.backend.ecommerce.security.JwtService;
@@ -22,6 +24,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final CustomModelMapper customModelMapper;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -32,7 +35,8 @@ public class AuthenticationService {
                 .role(Role.ADMIN)
                 .build();
         User savedUser = userRepository.save(user);
-        return new AuthenticationResponse(jwtService.generateToken(savedUser), savedUser);
+        UserDTO userDTO = customModelMapper.apply(savedUser);
+        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
         //[TODO] return user
     }
 
