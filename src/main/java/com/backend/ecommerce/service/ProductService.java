@@ -2,18 +2,14 @@ package com.backend.ecommerce.service;
 
 import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
-import com.backend.ecommerce.entity.ProductCategory;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.repository.CategoryRepository;
-import com.backend.ecommerce.repository.ProductCategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
-import com.backend.ecommerce.dto.ProductDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,8 +17,6 @@ public class ProductService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final ProductCategoryRepository productCategoryRepository;
-
 
     public Product createProduct(Product product) {
         return productRepository.save(product);
