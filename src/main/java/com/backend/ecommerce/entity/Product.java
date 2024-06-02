@@ -24,7 +24,7 @@ public class Product {
     private String description;
     private String imageUrl;
     private Boolean availability;
-    private List<Long> categoryIds;
+    private List<Long> categoryIds = new ArrayList<>();
     private Long transactionId;
 
 }

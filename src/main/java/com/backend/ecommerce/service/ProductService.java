@@ -63,8 +63,8 @@ public class ProductService {
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-
-//        product.getCategories().add(category);
+        Long id = category.getId();
+        product.getCategoryIds().add(id);
         return productRepository.save(product);
     }
 }

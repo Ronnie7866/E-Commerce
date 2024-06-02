@@ -4,6 +4,7 @@ import com.backend.ecommerce.dto.CustomModelMapper;
 import com.backend.ecommerce.dto.UserDTO;
 import com.backend.ecommerce.entity.Address;
 import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.repository.AddressRepository;
 import com.backend.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -20,16 +21,13 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final UserService userService;
     private final CustomModelMapper customModelMapper;
+    private final UserRepository userRepository;
 
     public Address save(Long userId, Address address) {
-        User user = customModelMapper.reverse(userService.getUserById(userId));
-        if (user == null) {
-            throw new NoSuchElementException("No user found with this userId");
-        }
+        User user = userRepository.findById(userId).get();
         user.getAddressList().add(address);
         address.setUser(user);
-        Address savedAddress = addressRepository.save(address);
-        return addressRepository.save(savedAddress);
+        return addressRepository.save(address);
     }
 
     public List<Address> getAll() {
@@ -68,7 +66,8 @@ public class AddressService {
     }
 
     public Address getAddressByUserId(Long id) {
-        return addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Adress not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
+        return addressRepository.findByUserId(user.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found with this id: " + id));
     }
 
     public String deleteAddressById(Long id) {

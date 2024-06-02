@@ -1,17 +1,13 @@
 package com.backend.ecommerce.controllers;
 
 
-import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.service.CategoryService;
 import com.backend.ecommerce.service.ProductService;
-import com.backend.ecommerce.dto.ProductDTO;
-import com.backend.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,13 +47,8 @@ public class ProductController {
         return ResponseEntity.ok(updatedProduct);
     }
 
-    @GetMapping("arib")
-    public void aribfunction(){
-        System.out.println("AribFunction");
-    }
-
     @PostMapping("/mapCategory")
-    public ResponseEntity<Product> assingProductWithCategory(@RequestParam String productId, @RequestParam Long categoryId) {
+    public ResponseEntity<Product> assignProductWithCategory(@RequestParam String productId, @RequestParam Long categoryId) {
         Product product = productService.assignCategoryToProduct(productId, categoryId);
         return ResponseEntity.ok(product);
     }

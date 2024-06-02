@@ -19,12 +19,12 @@ public class Address {
     @Enumerated(EnumType.STRING)
     private PhoneType phoneType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch =  FetchType.EAGER)
     @JsonIgnore
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
-    @JoinColumn(name = "buyer_id")
-    private Buyer buyer;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    @JoinColumn(name = "buyer_id")
+//    private Buyer buyer;
 }

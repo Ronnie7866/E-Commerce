@@ -32,8 +32,6 @@ public class CartService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
-        //System.out.println("Finished existing check");
-        //System.out.println(user);
 
         Cart cart = user.getCart();
 
@@ -74,8 +72,6 @@ public class CartService {
         }
 
         CartItem savedCartItem = cartItemRepository.save(cartItem);
-        System.out.println("savedCartItem : " + savedCartItem);
-
         return "Done";
     }
 

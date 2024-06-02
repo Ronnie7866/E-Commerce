@@ -36,7 +36,7 @@ public class AddressController {
     @GetMapping("/{id}")
     public ResponseEntity<Address> getAddressByUserId(@PathVariable Long id) {
         Address address = addressService.getAddressByUserId(id);
-        return ResponseEntity.ok().body(address);
+        return ResponseEntity.ok(address);
     }
 
     @DeleteMapping
