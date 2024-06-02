@@ -2,6 +2,7 @@ package com.backend.ecommerce.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.aspectj.weaver.ast.Or;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,6 +27,9 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne
+    private Order order;
 
 
 }
