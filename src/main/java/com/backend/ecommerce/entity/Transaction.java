@@ -20,9 +20,8 @@ public class Transaction {
     private TransactionType transactionType;
     private String transactionStatus;
     private Double transactionAmount;
-
-    @OneToMany
-    private List<Product> product = new ArrayList<Product>();
+    @ElementCollection
+    private List<String> productIds = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

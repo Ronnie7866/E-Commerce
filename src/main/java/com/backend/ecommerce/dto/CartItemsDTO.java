@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CartItemsDTO {
 
     Long cartItemId;
-    Long productId;
+    String productId;
     String productName;
     Integer quantity;
     BigDecimal unitPrice;

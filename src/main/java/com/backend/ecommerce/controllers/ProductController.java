@@ -23,15 +23,14 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO apd) {
-        System.out.println(apd);
-        Product createdProduct = productService.createProduct(apd);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product createdProduct = productService.createProduct(product);
         return ResponseEntity.ok(createdProduct);
     }
 
     @PostMapping("/add-all")
-    public ResponseEntity<List<Product>> createListProduct(@RequestBody List<ProductDTO> apd) {
-        List<Product> products = productService.addAll(apd);
+    public ResponseEntity<List<Product>> createListProduct(@RequestBody List<Product> productList) {
+        List<Product> products = productService.addAll(productList);
         return ResponseEntity.ok(products);
     }
 
@@ -41,21 +40,15 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
         Product productById = productService.getProductById(id);
         return ResponseEntity.ok(productById);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable Long id) {
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable String id) {
         Product updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("arib")
@@ -64,15 +57,14 @@ public class ProductController {
     }
 
     @PostMapping("/mapCategory")
-    public ResponseEntity<Product> assingProductWithCategory(@RequestParam Long productId, @RequestParam Long categoryId) {
+    public ResponseEntity<Product> assingProductWithCategory(@RequestParam String productId, @RequestParam Long categoryId) {
         Product product = productService.assignCategoryToProduct(productId, categoryId);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping("/getProductByCategory/{id}")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long id) {
-        Category category = categoryService.findById(id);
-        List<Product> list = new ArrayList<>(category.getProducts());
-        return ResponseEntity.ok(list);
+        List<Product> productByCategory = productService.getProductByCategory(id);
+        return ResponseEntity.ok(productByCategory);
     }
 }

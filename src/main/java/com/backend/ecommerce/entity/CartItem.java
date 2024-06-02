@@ -21,10 +21,10 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    @Column(name = "product_id", nullable = false)
+    private String productId;
 
-    //    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
+    @Transient
     private Product product;
 
     private Integer quantity;

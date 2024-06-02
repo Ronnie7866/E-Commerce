@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,9 +29,14 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found with this id"));
     }
 
-    public List<Category> getCategoryByProductId(Long productId) {
+    public List<Category> getCategoryByProductId(String productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found with this id"));
-        return product.getCategories().stream().toList();
+        List<Category> categoryList = new ArrayList<>();
+        for (var i : product.getCategoryIds()) {
+            Category cat = categoryRepository.findById(i).get();
+            categoryList.add(cat);
+        }
+        return categoryList;
     }
     public Category create(Category category) {
         return categoryRepository.save(category);
@@ -45,7 +51,7 @@ public class CategoryService {
         Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with this id"));
         existingCategory.setName(category.getName());
         existingCategory.setDescription(category.getDescription());
-        existingCategory.setProducts(category.getProducts());
+        existingCategory.setProductIds(category.getProductIds());
         return categoryRepository.save(existingCategory);
     }
 

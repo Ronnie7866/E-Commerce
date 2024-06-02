@@ -28,7 +28,7 @@ public class CartService {
      * or creates a new cartItem in the cart, if product was not already in the cart
      * or updates the quantity of the product if it was already present in the cart
      **/
-    public String addProductToCart(Long userId, Long productId, Integer quantity) {
+    public String addProductToCart(Long userId, String productId, Integer quantity) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -69,7 +69,7 @@ public class CartService {
         else {
             cartItem = new CartItem();
             cartItem.setCart(cart);
-            cartItem.setProduct(product);
+            cartItem.setProductId(productId);
             cartItem.setQuantity(quantity);
         }
 

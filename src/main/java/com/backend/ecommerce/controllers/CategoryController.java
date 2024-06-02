@@ -58,7 +58,7 @@ public class CategoryController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Category>> findListOfCategoryByProductId(@RequestParam Long productId) {
+    public ResponseEntity<List<Category>> findListOfCategoryByProductId(@RequestParam String productId) {
         List<Category> categoryByProductId = categoryService.getCategoryByProductId(productId);
         return ResponseEntity.ok(categoryByProductId);
     }

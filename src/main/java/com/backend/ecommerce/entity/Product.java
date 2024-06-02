@@ -18,20 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Product {
-    private Long id;
+    private String id;
     private String name;
     private BigDecimal price;
     private String description;
     private String imageUrl;
     private Boolean availability;
     private List<Long> categoryIds;
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<CartItem> cartItems = new HashSet<>();
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    private List<Category> categories;
+    private Long transactionId;
 
 }
 

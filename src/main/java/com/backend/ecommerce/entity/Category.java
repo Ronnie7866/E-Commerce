@@ -17,8 +17,6 @@ public class Category {
     private Long id;
     private String name;
     private String description;
-
-//    @ManyToMany(mappedBy = "categories")
-//    @JsonIgnore
-//    private List<Product> products;
+    @ElementCollection
+    private List<String> productIds = new ArrayList<>();
 }
