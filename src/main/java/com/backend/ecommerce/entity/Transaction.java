@@ -4,6 +4,7 @@ import com.backend.ecommerce.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,8 +23,10 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    private String transactionStatus;
-    private Double transactionAmount;
+    private String status;
+    private BigDecimal amount;
+    private String notes;
+    private BigDecimal transactionFee;
 
     @ElementCollection
     private List<String> productIds = new ArrayList<>();
@@ -32,7 +35,12 @@ public class Transaction {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "bank_detail_id")
+    private UserBankDetails bankDetail;
 
 
 }

@@ -1,8 +1,7 @@
 package com.backend.ecommerce.entity;
 
 import com.backend.ecommerce.enums.AvailabilityStatus;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +35,7 @@ public class Product {
 
     private List<Long> categoryIds = new ArrayList<>();
     private Long transactionId;
-    private Long productImageId;
+    private List<Seller> sellers = new ArrayList<>();
+    private List<Long> productImageIds = new ArrayList<>();
 }
 

@@ -23,4 +23,7 @@ public class ProductImageTable {
 
     @ElementCollection
     private List<String> productIds = new ArrayList<>();
+
+
+    private byte[] image;
 }

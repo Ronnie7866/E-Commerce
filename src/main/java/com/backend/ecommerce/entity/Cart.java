@@ -26,6 +26,11 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //removed , cascade = CascadeType.ALL
     private Set<CartItem> cartItems = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private Buyer buyer;
+
+
     @Override
     public String toString() {
         return "Cart{" +
