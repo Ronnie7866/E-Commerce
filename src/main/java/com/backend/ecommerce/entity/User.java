@@ -1,7 +1,7 @@
 package com.backend.ecommerce.entity;
 
 
-import com.backend.ecommerce.enums.Role;
+//import com.backend.ecommerce.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,8 +28,12 @@ public class User  {
     private String email;
     private String password;
     private Long defaultPhoneNumber;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Order order;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -40,7 +44,7 @@ public class User  {
     @JsonIgnore
     private Cart cart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> transaction = new ArrayList<>();
 
     public User(String s, String s1) {}

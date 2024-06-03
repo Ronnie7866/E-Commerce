@@ -4,20 +4,24 @@ package com.backend.ecommerce.entity;
 import com.backend.ecommerce.enums.AvailabilityStatus;
 import com.backend.ecommerce.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "Orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long buyerId;
-    private Long sellerId;
+
     private LocalDateTime orderDate;
     private LocalDateTime updatedAt;
 
@@ -30,8 +34,14 @@ public class Order {
     @OneToOne
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Transaction transaction;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Transaction> transactions = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    private List<OrderProducts> orderProducts = new ArrayList<>();
+
+//    @ManyToOne()
+//    private Buyer buyer;
 
     @Transient
     private Long userId;

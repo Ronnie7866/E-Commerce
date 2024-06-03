@@ -15,19 +15,23 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDate transactionDate;
     private LocalTime transactionTime;
+
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
+
     private String transactionStatus;
     private Double transactionAmount;
+
     @ElementCollection
     private List<String> productIds = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     private Order order;
 
 

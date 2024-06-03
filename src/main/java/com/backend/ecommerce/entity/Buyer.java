@@ -13,7 +13,8 @@
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Integer id;
+//    private Integer buyer_id;
+//
 //    private String firstName;
 //    private String lastName;
 //    private String email;
@@ -23,4 +24,7 @@
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    private List<Address> address;
+//
+//    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Order> order;
 //}
