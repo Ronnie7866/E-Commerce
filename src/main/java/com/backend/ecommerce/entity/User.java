@@ -27,6 +27,9 @@ public class User  {
     private String lastName;
     private String email;
     private String password;
+    private String username;
+    private String securityQuestion;
+    private String securityAnswer;
     private Long defaultPhoneNumber;
 
 //    @Enumerated(EnumType.STRING)

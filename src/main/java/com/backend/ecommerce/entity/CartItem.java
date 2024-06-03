@@ -1,5 +1,6 @@
 package com.backend.ecommerce.entity;
 
+import com.backend.ecommerce.enums.AvailabilityStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,9 @@ public class CartItem {
     private Product product;
 
     private Integer quantity;
+
+    @Enumerated(EnumType.STRING)
+    private AvailabilityStatus availabilityStatus;
 
     @Override
     public String toString() {

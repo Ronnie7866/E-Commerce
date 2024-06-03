@@ -11,10 +11,10 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long phoneNumber;
-    private String areaCode;
-    private String city;
-    private String country;
+
+    private String addressType;
+    private String streetAddress;
+    private String pinCode;
 
     @Enumerated(EnumType.STRING)
     private PhoneType phoneType;
@@ -22,6 +22,10 @@ public class Address {
     @ManyToOne(cascade = CascadeType.ALL, fetch =  FetchType.EAGER)
     @JsonIgnore
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JsonIgnore

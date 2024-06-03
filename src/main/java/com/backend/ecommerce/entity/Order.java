@@ -40,8 +40,9 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderProducts> orderProducts = new ArrayList<>();
 
-//    @ManyToOne()
-//    private Buyer buyer;
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private Buyer buyer;
 
     @Transient
     private Long userId;
