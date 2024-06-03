@@ -41,8 +41,10 @@ public class Order {
     private List<OrderProducts> orderProducts = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id")
     private Buyer buyer;
+
+//    @ManyToOne()
+//    private Buyer buyer;
 
     @Transient
     private Long userId;

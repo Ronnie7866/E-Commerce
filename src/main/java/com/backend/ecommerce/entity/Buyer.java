@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "buyers")
 public class Buyer {
 
     @Id
@@ -23,6 +22,9 @@ public class Buyer {
     private String securityQuestion;
     private String securityAnswer;
     private String deviceToken;
+
+    @ManyToOne
+    private Cart cart;
 
     @JsonIgnore
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
