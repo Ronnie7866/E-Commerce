@@ -44,14 +44,7 @@ public class AddressService {
             Optional<Address> userAddressOptional = addressRepository.findByUserId(userId);
 
             if (userAddressOptional.isPresent()) {
-                Address existingAddress = userAddressOptional.get();
-
-                // Update the address details
-                existingAddress.setCity(address.getCity());
-                existingAddress.setCountry(address.getCountry());
-                existingAddress.setAreaCode(address.getAreaCode());
-                existingAddress.setPhoneType(address.getPhoneType());
-                existingAddress.setPhoneNumber(address.getPhoneNumber());
+                Address existingAddress = getAddress(address, userAddressOptional);
 
                 // Save the updated address
                 return addressRepository.save(existingAddress);
@@ -63,6 +56,19 @@ public class AddressService {
         } else {
             throw new IllegalArgumentException("User with ID " + userId + " does not exist");
         }
+    }
+
+    private static Address getAddress(Address address, Optional<Address> userAddressOptional) {
+        Address existingAddress = userAddressOptional.get();
+
+        // Update the address details
+        existingAddress.setCity(address.getCity());
+        existingAddress.setAddressType(address.getAddressType());
+        existingAddress.setPhoneType(address.getPhoneType());
+        existingAddress.setStreetAddress(address.getStreetAddress());
+        existingAddress.setUser(address.getUser());
+        existingAddress.setPinCode(address.getPinCode());
+        return existingAddress;
     }
 
     public Address getAddressByUserId(Long id) {
