@@ -21,7 +21,7 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "product_id")
     private String productId;
 
     @Transient

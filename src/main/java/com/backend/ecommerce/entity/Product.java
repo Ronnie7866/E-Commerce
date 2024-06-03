@@ -36,6 +36,6 @@ public class Product {
 
     private List<Long> categoryIds = new ArrayList<>();
     private Long transactionId;
-
+    private Long productImageId;
 }
 
