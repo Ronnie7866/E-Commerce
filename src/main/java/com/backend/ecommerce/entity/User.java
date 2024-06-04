@@ -35,7 +35,8 @@ public class User  {
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+//            (cascade = CascadeType.ALL) //todo socho
     private Order order;
 
     @JsonIgnore
@@ -50,7 +51,7 @@ public class User  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> transaction = new ArrayList<>();
 
-    public User(String s, String s1) {}
+//    public User(String s, String s1) {}
 
     public User(String firstName, String lastName, String email, Long defaultPhoneNumber, List<Address> addressList) {
         this.firstName = firstName;

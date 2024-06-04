@@ -5,6 +5,8 @@ import com.backend.ecommerce.enums.AvailabilityStatus;
 import com.backend.ecommerce.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,33 +24,40 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime orderDate;
-    private LocalDateTime updatedAt;
+//    private LocalDateTime orderDate;
+//    private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
-    private AvailabilityStatus availabilityStatus;
+//    @Enumerated(EnumType.STRING)
+//    private AvailabilityStatus availabilityStatus;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Transaction> transactions = new ArrayList<>();
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+//    private List<Transaction> transactions = new ArrayList<>();
+    private Transaction transaction;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderProducts> orderProducts = new ArrayList<>();
 
-    @ManyToOne
-    private Buyer buyer;
-
-//    @ManyToOne()
+//    @ManyToOne
 //    private Buyer buyer;
 
-    @Transient
-    private Long userId;
+
+    @CreationTimestamp
+    @Column(name = "createdat", nullable = false)
+    private LocalDateTime createdat;
+
+    @UpdateTimestamp
+    @Column(name = "modifiedat", nullable = false)
+    private LocalDateTime modifiedat;
 
     @Transient
-    private Long transactionId;
+    private Long userId = user.getId();
+
+    @Transient
+    private Long transactionId = transaction.getId();
 }
