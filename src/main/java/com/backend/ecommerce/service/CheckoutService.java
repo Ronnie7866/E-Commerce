@@ -28,39 +28,53 @@ public class CheckoutService {
     private final OrderProductsRepository orderProductsRepository;
     private final TransactionRepository transactionRepository;
 
-//    public CheckoutService(OrderRepository orderRepository) {
-//        this.orderRepository = orderRepository;
-//    }
 
-    public Order checkout(Long userId, List<Long> orderProductsId, TransactionType transactionType, BigDecimal transactionAmount) {
+    public Order checkout(Long userId, List<Long> orderProductsIds, TransactionType transactionType, BigDecimal transactionAmount) {
+        // Fetch the user
+        System.out.println("Fetching user with ID: " + userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
+        System.out.println("User found: " + user);
 
+        // Fetch and validate order products
+        System.out.println("Fetching order products with IDs: " + orderProductsIds);
+        List<OrderProducts> orderProducts = orderProductsRepository.findAllById(orderProductsIds);
+        if (orderProducts.isEmpty()) {
+            System.out.println("No order products found for IDs: " + orderProductsIds);
+            throw new RuntimeException("Order products not found");
+        }
+        if (orderProducts.size() != orderProductsIds.size()) {
+            System.out.println("Some order products not found. Found: " + orderProducts);
+            throw new RuntimeException("Some order products not found");
+        }
+        System.out.println("Order products found: " + orderProducts);
+
+        // Create the order
         Order order = new Order();
-
-//        order.setOrderDate(LocalDateTime.now());
-//        order.setAvailabilityStatus(AvailabilityStatus.AVAILABLE);
-        order.setOrderStatus(OrderStatus.PENDING);
-
-        User user = userRepository.findById(userId).get();
         order.setUser(user);
-        
-        List<OrderProducts> orderProductsList = orderProductsRepository.findAllById(orderProductsId);
-        order.setOrderProducts(orderProductsList);
+        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderProducts(orderProducts);
 
-        Transaction t = new Transaction();
-        t.setTransactionType(transactionType);
-        t.setTransactionAmount(transactionAmount);
-        t.setUser(user);
+        // Create and save the transaction
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(transactionType);
+        transaction.setTransactionAmount(transactionAmount);
+        transaction.setUser(user);
+        transaction.setOrder(order); // Set the relationship
+        transactionRepository.save(transaction);
+        System.out.println("Transaction saved: " + transaction);
 
-        //GHAPLA
+        // Add transaction to order
+        order.setTransaction(transaction);
 
-        order.setTransaction(t);
+        // Set the order in each orderProduct
+        for (OrderProducts orderProduct : orderProducts) {
+            orderProduct.setOrder(order);
+        }
 
-        Order savedOrder = orderRepository.save(order);
+        // Save the order
+        orderRepository.save(order);
+        System.out.println("Order saved: " + order);
 
-        t.setOrder(savedOrder);
-        transactionRepository.save(t); //todo
-        //
-
-        return savedOrder;
+        return order;
     }
 }

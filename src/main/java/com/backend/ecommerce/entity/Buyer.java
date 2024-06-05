@@ -30,8 +30,8 @@ public class Buyer {
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Address> address;
 
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> order;
+//    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Order> order;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

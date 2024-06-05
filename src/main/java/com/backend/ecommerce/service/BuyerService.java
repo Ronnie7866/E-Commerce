@@ -40,7 +40,6 @@ public class BuyerService {
         oldBuyer.setSecurityQuestion(buyer.getSecurityQuestion());
         oldBuyer.setCart(buyer.getCart());
         oldBuyer.setAddress(buyer.getAddress());
-        oldBuyer.setOrder(buyer.getOrder());
         oldBuyer.setUser(buyer.getUser());
         return buyerRepository.save(buyer);
     }

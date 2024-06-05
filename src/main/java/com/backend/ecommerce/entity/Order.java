@@ -37,7 +37,6 @@ public class Order {
     private User user;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-//    private List<Transaction> transactions = new ArrayList<>();
     private Transaction transaction;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
@@ -53,11 +52,11 @@ public class Order {
 
     @UpdateTimestamp
     @Column(name = "modifiedat", nullable = false)
-    private LocalDateTime modifiedat;
+    private LocalDateTime modifiedate;
 
-    @Transient
-    private Long userId = user.getId();
-
-    @Transient
-    private Long transactionId = transaction.getId();
+//    @Transient
+//    private Long userId = user.getId();
+//
+//    @Transient
+//    private Long transactionId = transaction.getId();
 }
