@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItem {
+public class CartProducts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "CartItem{" +
+        return "CartProducts{" +
                 "id=" + id +
                 ", cart=" + "Cart Value Omitted" +
                 ", product=" + product +

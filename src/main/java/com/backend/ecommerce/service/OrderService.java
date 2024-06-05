@@ -3,6 +3,7 @@ package com.backend.ecommerce.service;
 import com.backend.ecommerce.dto.OrderProductRequest;
 import com.backend.ecommerce.dto.OrderRequest;
 import com.backend.ecommerce.entity.*;
+import com.backend.ecommerce.enums.AvailabilityStatus;
 import com.backend.ecommerce.enums.OrderStatus;
 import com.backend.ecommerce.repository.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +23,8 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderProductsRepository orderProductsRepository;
+    private final CartRepository orderCartRepository;
+    private final CartRepository cartRepository;
 
 
     public void createOrder(OrderRequest orderRequest) {
@@ -63,5 +67,25 @@ public class OrderService {
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+    }
+
+    public Order convertCartToOrder(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart not found"));
+        User user = cart.getUser();
+
+        Order order = new Order();
+        order.setUser(user);
+
+        List<OrderProducts> orderProductsList = cart.getCartProducts().stream().map(cartProduct -> {
+            OrderProducts orderProduct = new OrderProducts();
+            orderProduct.setOrder(order);
+            orderProduct.setProductId(cartProduct.getProductId());
+            orderProduct.setQuantity(cartProduct.getQuantity());
+            return orderProduct;
+        }).collect(Collectors.toList());
+
+        order.setOrderProducts(orderProductsList);
+
+        return orderRepository.save(order);
     }
 }

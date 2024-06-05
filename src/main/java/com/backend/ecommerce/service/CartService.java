@@ -35,7 +35,7 @@ public class CartService {
 
         Cart cart = user.getCart();
 
-        CartItem cartItem;
+        CartProducts cartProducts;
 
         //FLOWCHART
         //                                                       /---- Exists ---> Update Its
@@ -46,7 +46,7 @@ public class CartService {
         //                \--> Doesn't exist -> ----------------------> Create New item  ------->/
         //                                                                & add to cart
 
-        Optional<CartItem> existingCartItemOpt = Optional.empty();
+        Optional<CartProducts> existingCartItemOpt = Optional.empty();
 
         //if Cart is present then try finding if the product being added is already in the cart or not
         if(!Objects.isNull(cart)) {
@@ -60,18 +60,18 @@ public class CartService {
 
         //if product is present then change its quantity to new one
         if (existingCartItemOpt.isPresent()) {
-            cartItem = existingCartItemOpt.get();
-            cartItem.setQuantity(quantity);
+            cartProducts = existingCartItemOpt.get();
+            cartProducts.setQuantity(quantity);
         }
         //if product is not present, or it's a new cart then create new item
         else {
-            cartItem = new CartItem();
-            cartItem.setCart(cart);
-            cartItem.setProductId(productId);
-            cartItem.setQuantity(quantity);
+            cartProducts = new CartProducts();
+            cartProducts.setCart(cart);
+            cartProducts.setProductId(productId);
+            cartProducts.setQuantity(quantity);
         }
 
-        CartItem savedCartItem = cartItemRepository.save(cartItem);
+        CartProducts savedCartProducts = cartItemRepository.save(cartProducts);
         return "Done";
     }
 
@@ -89,8 +89,8 @@ public class CartService {
             throw new RuntimeException("Not Present");
         }
         Long cartId = cartOpt.get().getId();
-        List<CartItem> cartItemList = cartItemRepository.findAllByCartId(cartId);
-        return cartItemList.stream()
+        List<CartProducts> cartProductsList = cartItemRepository.findAllByCartId(cartId);
+        return cartProductsList.stream()
                 .map(CartItemsDTO::new).toList();
 //        return null;
         //findAllByCart(cart);

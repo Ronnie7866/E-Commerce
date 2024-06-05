@@ -1,6 +1,6 @@
 package com.backend.ecommerce.dto;
 
-import com.backend.ecommerce.entity.CartItem;
+import com.backend.ecommerce.entity.CartProducts;
 import com.backend.ecommerce.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class CartItemsDTO {
     LocalDateTime addedOn;
     String productApiEndpoint;
 
-    public CartItemsDTO(CartItem ci){
+    public CartItemsDTO(CartProducts ci){
         Product p = ci.getProduct();
         this.cartItemId = ci.getId();
         this.productId = p.getId();

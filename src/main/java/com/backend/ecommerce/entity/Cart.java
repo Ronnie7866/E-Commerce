@@ -24,7 +24,7 @@ public class Cart {
 
     @JsonIgnore
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //removed , cascade = CascadeType.ALL
-    private Set<CartItem> cartItems = new HashSet<>();
+    private Set<CartProducts> cartProducts = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")
@@ -36,7 +36,7 @@ public class Cart {
         return "Cart{" +
                 "id=" + id +
                 ", user=" + user.getId() +
-                ", cartItems=" + " cartItems value omitted " +
+                ", cartProducts=" + " cartProducts value omitted " +
                 '}';
     }
 }

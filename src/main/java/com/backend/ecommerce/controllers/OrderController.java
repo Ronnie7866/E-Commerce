@@ -60,4 +60,9 @@ public class OrderController {
         List<Order> allOrders = orderService.getAllOrders();
         return ResponseEntity.ok(allOrders);
     }
+
+    @PostMapping("/convert/{cartId}")
+    public Order convertCartToOrder(@PathVariable Long cartId) {
+        return orderService.convertCartToOrder(cartId);
+    }
 }
