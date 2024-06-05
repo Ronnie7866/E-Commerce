@@ -2,6 +2,7 @@ package com.backend.ecommerce.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,5 +12,5 @@ import java.util.List;
 public class OrderRequest {
 
     private Long userId;
-    private List<OrderProductRequest> orderProducts;
+    private List<OrderProductRequest> orderProducts = new ArrayList<>();
 }

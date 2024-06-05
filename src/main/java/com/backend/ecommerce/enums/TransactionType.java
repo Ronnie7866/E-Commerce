@@ -2,21 +2,17 @@ package com.backend.ecommerce.enums;
 
 public enum TransactionType {
 
-    DEPOSIT,
-    WITHDRAWAL,
-    TRANSFER,
-    PAYMENT,
-    REFUND;
+    IMPS,
+    UPI,
+    COD;
 
 
     @Override
     public String toString() {
         return switch (this) {
-            case DEPOSIT -> "Deposit";
-            case WITHDRAWAL -> "Withdrawal";
-            case TRANSFER -> "Transfer";
-            case PAYMENT -> "Payment";
-            case REFUND -> "Refund";
+            case COD -> "COD";
+            case IMPS -> "IMPS";
+            case UPI -> "UPI";
             default -> throw new IllegalArgumentException();
         };
     }

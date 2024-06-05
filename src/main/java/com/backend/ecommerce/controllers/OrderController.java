@@ -7,6 +7,7 @@ import com.backend.ecommerce.enums.TransactionType;
 import com.backend.ecommerce.service.CheckoutService;
 import com.backend.ecommerce.service.OrderService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,17 @@ public class OrderController {
     public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
         orderService.createOrder(orderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("Order created successfully");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Order> getOrderById(@PathVariable long id) {
+        Order order = orderService.getOrder((int) id);
+        return ResponseEntity.ok(order);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> allOrders = orderService.getAllOrders();
+        return ResponseEntity.ok(allOrders);
     }
 }
