@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface CartItemRepository extends JpaRepository<CartProducts, Long> {
+public interface CartProductsRepository extends JpaRepository<CartProducts, Long> {
 
     Optional<CartProducts> findByCartIdAndProductId(@Param("cart") Long cartId, @Param("productId") String productId);
 

@@ -1,7 +1,7 @@
 package com.backend.ecommerce.service;
 
 import com.backend.ecommerce.entity.*;
-import com.backend.ecommerce.repository.CartItemRepository;
+import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.repository.CartRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
@@ -22,7 +22,7 @@ public class CartService {
     private UserRepository userRepository;
     private CartRepository cartRepository;
     private ProductRepository productRepository;
-    private CartItemRepository cartItemRepository;
+    private CartProductsRepository cartProductsRepository;
 
     /** The following code either creates a new cart with new cartItem
      * or creates a new cartItem in the cart, if product was not already in the cart
@@ -50,7 +50,7 @@ public class CartService {
 
         //if Cart is present then try finding if the product being added is already in the cart or not
         if(!Objects.isNull(cart)) {
-            existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
+            existingCartItemOpt = cartProductsRepository.findByCartIdAndProductId(cart.getId(), productId);
         }
         //if cart is not present then create new cart
         else{
@@ -71,7 +71,7 @@ public class CartService {
             cartProducts.setQuantity(quantity);
         }
 
-        CartProducts savedCartProducts = cartItemRepository.save(cartProducts);
+        CartProducts savedCartProducts = cartProductsRepository.save(cartProducts);
         return "Done";
     }
 
@@ -89,7 +89,7 @@ public class CartService {
             throw new RuntimeException("Not Present");
         }
         Long cartId = cartOpt.get().getId();
-        List<CartProducts> cartProductsList = cartItemRepository.findAllByCartId(cartId);
+        List<CartProducts> cartProductsList = cartProductsRepository.findAllByCartId(cartId);
         return cartProductsList.stream()
                 .map(CartItemsDTO::new).toList();
 //        return null;

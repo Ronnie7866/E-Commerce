@@ -1,17 +1,12 @@
 
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.authentication.AuthenticationResponse;
-import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.CustomModelMapper;
 import com.backend.ecommerce.dto.UserDTO;
 //import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.exception.DuplicateEntryException;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
-import com.backend.ecommerce.repository.CartItemRepository;
 import com.backend.ecommerce.entity.User;
-import com.backend.ecommerce.repository.CartRepository;
-import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
 //import com.backend.ecommerce.security.JwtService;
 import lombok.AllArgsConstructor;

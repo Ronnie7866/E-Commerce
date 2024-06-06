@@ -1,23 +1,18 @@
 package com.backend.ecommerce.service;
 
 
-import com.backend.ecommerce.entity.Order;
-import com.backend.ecommerce.entity.OrderProducts;
-import com.backend.ecommerce.entity.Transaction;
-import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.enums.AvailabilityStatus;
 import com.backend.ecommerce.enums.OrderStatus;
 import com.backend.ecommerce.enums.TransactionType;
-import com.backend.ecommerce.repository.OrderProductsRepository;
-import com.backend.ecommerce.repository.OrderRepository;
-import com.backend.ecommerce.repository.TransactionRepository;
-import com.backend.ecommerce.repository.UserRepository;
+import com.backend.ecommerce.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,26 +22,35 @@ public class CheckoutService {
     private final UserRepository userRepository;
     private final OrderProductsRepository orderProductsRepository;
     private final TransactionRepository transactionRepository;
+    private final CartProductsRepository cartProductsRepository;
+    private final CartRepository cartRepository;
 
 
-    public Order checkout(Long userId, List<Long> orderProductsIds, TransactionType transactionType, BigDecimal transactionAmount) {
+    public Order checkout(Long userId, Long cartId, TransactionType transactionType, BigDecimal transactionAmount) {
         // Fetch the user
         System.out.println("Fetching user with ID: " + userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
         System.out.println("User found: " + user);
 
-        // Fetch and validate order products
-        System.out.println("Fetching order products with IDs: " + orderProductsIds);
-        List<OrderProducts> orderProducts = orderProductsRepository.findAllById(orderProductsIds);
-        if (orderProducts.isEmpty()) {
-            System.out.println("No order products found for IDs: " + orderProductsIds);
-            throw new RuntimeException("Order products not found");
+        // Fetch the cart
+        System.out.println("Fetching cart with ID: " + cartId);
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart Not Found"));
+        System.out.println("Cart found: " + cart);
+
+        // Fetch and validate cart products
+        List<CartProducts> cartProducts = cart.getCartProducts();
+        if (cartProducts.isEmpty()) {
+            throw new RuntimeException("Cart is empty");
         }
-        if (orderProducts.size() != orderProductsIds.size()) {
-            System.out.println("Some order products not found. Found: " + orderProducts);
-            throw new RuntimeException("Some order products not found");
-        }
-        System.out.println("Order products found: " + orderProducts);
+        System.out.println("Cart products found: " + cartProducts);
+
+        // Convert cart products to order products
+        List<OrderProducts> orderProducts = cartProducts.stream().map(cartProduct -> {
+            OrderProducts orderProduct = new OrderProducts();
+            orderProduct.setProductId(cartProduct.getProductId());
+            orderProduct.setQuantity(cartProduct.getQuantity());
+            return orderProduct;
+        }).collect(Collectors.toList());
 
         // Create the order
         Order order = new Order();
@@ -74,6 +78,11 @@ public class CheckoutService {
         // Save the order
         orderRepository.save(order);
         System.out.println("Order saved: " + order);
+
+        // Clear the cart (optional)
+        cartProductsRepository.deleteAll(cartProducts);
+        cartRepository.delete(cart);
+        System.out.println("Cart and cart products deleted");
 
         return order;
     }
