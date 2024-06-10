@@ -1,6 +1,7 @@
 package com.backend.ecommerce.entity;
 
 import com.backend.ecommerce.enums.TransactionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,6 +43,7 @@ public class Transaction {
     @ManyToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Order order;
 }

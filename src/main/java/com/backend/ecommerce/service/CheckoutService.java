@@ -8,6 +8,7 @@ import com.backend.ecommerce.enums.TransactionType;
 import com.backend.ecommerce.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+
 @AllArgsConstructor
 public class CheckoutService {
 
@@ -26,6 +28,7 @@ public class CheckoutService {
     private final CartRepository cartRepository;
 
 
+    @Transactional
     public Order checkout(Long userId, Long cartId, TransactionType transactionType, BigDecimal transactionAmount) {
         // Fetch the user
         System.out.println("Fetching user with ID: " + userId);
@@ -64,8 +67,9 @@ public class CheckoutService {
         transaction.setTransactionAmount(transactionAmount);
         transaction.setUser(user);
         transaction.setOrder(order); // Set the relationship
-        transactionRepository.save(transaction);
         System.out.println("Transaction saved: " + transaction);
+        transactionRepository.save(transaction);
+
 
         // Add transaction to order
         order.setTransaction(transaction);
@@ -80,9 +84,17 @@ public class CheckoutService {
         System.out.println("Order saved: " + order);
 
         // Clear the cart (optional)
-        cartProductsRepository.deleteAll(cartProducts);
-        cartRepository.delete(cart);
-        System.out.println("Cart and cart products deleted");
+//        Cart cart1 = new Cart();
+//        cart1 = cartRepository.findById(cartId).get();
+//        System.out.println(cart1);
+        cartRepository.deleteById(cartId);
+
+
+//        System.out.println(cart);
+//        System.out.println(cartProducts);
+//        cartProductsRepository.deleteAll(cartProducts);
+//        cartRepository.delete(cart);
+//        System.out.println("Cart and cart products deleted");
 
         return order;
     }

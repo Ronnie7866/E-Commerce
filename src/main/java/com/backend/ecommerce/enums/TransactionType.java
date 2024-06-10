@@ -7,13 +7,13 @@ public enum TransactionType {
     COD;
 
 
-    @Override
-    public String toString() {
-        return switch (this) {
-            case COD -> "COD";
-            case IMPS -> "IMPS";
-            case UPI -> "UPI";
-            default -> throw new IllegalArgumentException();
-        };
-    }
+//    @Override
+//    public String toString() {
+//        return switch (this) {
+//            case COD -> "COD";
+//            case IMPS -> "IMPS";
+//            case UPI -> "UPI";
+//            default -> throw new IllegalArgumentException();
+//        };
+//    }
 }
