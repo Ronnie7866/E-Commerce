@@ -1,9 +1,12 @@
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dto.CartDTO;
 import com.backend.ecommerce.entity.Cart;
+import com.backend.ecommerce.entity.CartProducts;
 import com.backend.ecommerce.service.CartService;
 import com.backend.ecommerce.dto.CartItemsDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/cart")
 public class CartController {
 
-    CartService cartService;
+    private final CartService cartService;
 
     @GetMapping
     public List<Cart> getAllCarts() {
@@ -26,12 +29,20 @@ public class CartController {
     }
 
     @PostMapping("/{userId}")
-    public String addProductToCart(@PathVariable Long userId, @RequestParam String productId, @RequestParam Integer quantity){
-        return cartService.addProductToCart(userId, productId, quantity);
+    public ResponseEntity<CartProducts> addProductToCart(@PathVariable Long userId, @RequestParam String productId, @RequestParam Integer quantity){ // TODO change userID to RequestParam
+        CartProducts cartProducts = cartService.addProductToCart(userId, productId, quantity);
+        return ResponseEntity.ok(cartProducts);
     }
 
     @GetMapping("/{cartId}")
-    public Cart getCart(@PathVariable Long cartId){
-        return cartService.getCart(cartId);
+    public ResponseEntity<Cart> getCart(@PathVariable Long cartId){
+        Cart cart = cartService.getCart(cartId);
+        return ResponseEntity.ok(cart);
+    }
+
+    @GetMapping("/getCartByUserId/{userId}")
+    public ResponseEntity<CartDTO> getCartByUserId(@PathVariable Long userId) {
+        CartDTO cartByUserId = cartService.getCartByUserId(userId);
+        return ResponseEntity.ok(cartByUserId);
     }
 }

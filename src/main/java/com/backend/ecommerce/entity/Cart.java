@@ -1,6 +1,7 @@
 package com.backend.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,13 +25,12 @@ public class Cart {
     @OneToOne
     private User user;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //removed , cascade = CascadeType.ALL
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartProducts> cartProducts = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id")
-    private Buyer buyer;
+//    @ManyToOne
+//    @JoinColumn(name = "buyer_id")
+//    private Buyer buyer;
 
 
     @Override

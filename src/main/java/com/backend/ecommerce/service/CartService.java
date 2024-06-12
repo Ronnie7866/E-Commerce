@@ -1,5 +1,7 @@
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.dto.CartDTO;
+import com.backend.ecommerce.dto.CartProductDTO;
 import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.repository.CartRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +31,7 @@ public class CartService {
      * or creates a new cartItem in the cart, if product was not already in the cart
      * or updates the quantity of the product if it was already present in the cart
      **/
-    public String addProductToCart(Long userId, String productId, Integer quantity) {
+    public CartProducts addProductToCart(Long userId, String productId, Integer quantity) {// TODO fix the infinite recursion
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -71,8 +74,7 @@ public class CartService {
             cartProducts.setQuantity(quantity);
         }
 
-        CartProducts savedCartProducts = cartProductsRepository.save(cartProducts);
-        return "Done";
+        return cartProductsRepository.save(cartProducts);
     }
 
     public List<Cart> getAllCarts() {
@@ -92,7 +94,36 @@ public class CartService {
         List<CartProducts> cartProductsList = cartProductsRepository.findAllByCartId(cartId);
         return cartProductsList.stream()
                 .map(CartItemsDTO::new).toList();
-//        return null;
-        //findAllByCart(cart);
+    }
+
+    public CartDTO getCartByUserId(Long userId) { // TODO when creating new user the new user gets the old cart fix this
+        Optional<Cart> cartOpt = cartRepository.findByUserId(userId);
+            if(cartOpt.isEmpty()) {
+                throw new RuntimeException("Not Present");
+            } else {
+                return convertToDTO(cartOpt.get());
+            }
+        }
+
+    private CartDTO convertToDTO(Cart cart) {
+        return new CartDTO(
+                cart.getId(),
+                cart.getUser().getId(),
+                cart.getCartProducts().stream()
+                        .map(this::convertCartProductToDTO)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    private CartProductDTO convertCartProductToDTO(CartProducts cartProduct) {
+        String availabilityStatus = (cartProduct.getAvailabilityStatus() != null) ?
+                cartProduct.getAvailabilityStatus().name() :
+                "UNAVAILABLE"; // Default to UNAVAILABLE if null
+        return new CartProductDTO(
+                cartProduct.getId(),
+                cartProduct.getProductId(),
+                cartProduct.getQuantity(),
+                availabilityStatus
+        );
     }
 }

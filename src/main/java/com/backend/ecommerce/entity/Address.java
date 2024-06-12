@@ -27,8 +27,8 @@ public class Address {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
-    @JoinColumn(name = "buyer_id")
-    private Buyer buyer;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    @JoinColumn(name = "buyer_id")
+//    private Buyer buyer;
 }

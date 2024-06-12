@@ -35,8 +35,7 @@ public class User  {
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
 
-    @OneToOne
-//            (cascade = CascadeType.ALL) //todo socho
+    @OneToOne(cascade = CascadeType.ALL) //todo socho
     private Order order;
 
     @JsonIgnore
