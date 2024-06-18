@@ -42,9 +42,12 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        User user = customModelMapper.reverse(userDTO);
-        User savedUser = userRepository.save(user);
-        return customModelMapper.apply(userRepository.save(savedUser));
+        if (!userRepository.existsByEmail(userDTO.email())) {
+            User user = customModelMapper.reverse(userDTO);
+            User savedUser = userRepository.save(user);
+            return customModelMapper.apply(userRepository.save(savedUser));
+        }
+        throw new DuplicateEntryException("Email already exists");
     }
 
     @Override
