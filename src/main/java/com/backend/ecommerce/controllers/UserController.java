@@ -1,10 +1,7 @@
 
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.authentication.AuthenticationResponse;
-import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.UserDTO;
-import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
