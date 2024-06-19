@@ -6,7 +6,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,19 +24,27 @@ public class Cart {
     private Long id;
 
 //    @JsonIgnore
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
 //    @JsonIgnore
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //removed , cascade = CascadeType.ALL
     private Set<CartItem> cartItems = new HashSet<>();
 
+    @CreationTimestamp
+    @Column(name = "createdat", nullable = false)
+    private LocalDateTime createdat;
+
+    @UpdateTimestamp
+    @Column(name = "modifiedat", nullable = false)
+    private LocalDateTime modifiedat;
+
     @Override
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", user=" + user.getId() +
-                ", cartItems=" + " cartItems value omitted " +
+                ", user=" + "user.getId()" +
+                ", cartItemsIds=" + cartItems.stream().map(CartItem::getId).toList() +
                 '}';
     }
 }

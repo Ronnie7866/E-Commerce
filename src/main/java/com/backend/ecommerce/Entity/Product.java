@@ -25,12 +25,8 @@ public class Product {
     private String imageUrl;
     private Boolean availability;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<CartItem> cartItems = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Category> categories;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    private List<Category> categories;
 
 }
 

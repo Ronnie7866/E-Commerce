@@ -8,7 +8,6 @@ import com.backend.ecommerce.Repository.CartRepository;
 import com.backend.ecommerce.Repository.ProductRepository;
 import com.backend.ecommerce.Repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class UserService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
-    private final PasswordEncoder passwordEncoder;
 
 
     public User createUser(User user) {

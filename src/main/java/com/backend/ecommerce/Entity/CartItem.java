@@ -17,13 +17,12 @@ public class CartItem {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //new
+    @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-
     //    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -33,8 +32,8 @@ public class CartItem {
     public String toString() {
         return "CartItem{" +
                 "id=" + id +
-                ", cart=" + "Cart Value Omitted" +
-                ", product=" + product +
+                ", cart=" + cart.getId() +
+                ", product=" + product.getId() +
                 ", quantity=" + quantity +
                 '}';
     }

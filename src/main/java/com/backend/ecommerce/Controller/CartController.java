@@ -16,12 +16,12 @@ import java.util.List;
 @RequestMapping("/api/cart")
 public class CartController {
 
-    CartService cartService;
+    private final CartService cartService;
 
-    @GetMapping
-    public List<Cart> getAllCarts() {
-        return cartService.getAllCarts();
-    }
+//    @GetMapping
+//    public List<Cart> getAllCarts() {
+//        return cartService.getAllCarts();
+//    }
 
     @GetMapping("/user/{userId}")
     public List<CartItemsDto> getCartItemsByUserId(@PathVariable Long userId) {

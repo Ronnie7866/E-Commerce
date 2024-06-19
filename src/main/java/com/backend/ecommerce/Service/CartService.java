@@ -52,36 +52,51 @@ public class CartService {
 
         //if Cart is present then try finding if the product being added is already in the cart or not
         if(!Objects.isNull(cart)) {
+            System.out.println("cart is not empty so finding if product present");
             existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
         }
+
         //if cart is not present then create new cart
         else{
+            System.out.println("Cart not present. Creating new cart, setting user");
             cart = new Cart();
             cart.setUser(user);
+            user.setCart(cart);
         }
 
         //if product is present then change its quantity to new one
         if (existingCartItemOpt.isPresent()) {
+            System.out.println("product present, changing quanitity");
             cartItem = existingCartItemOpt.get();
             cartItem.setQuantity(quantity);
         }
         //if product is not present, or it's a new cart then create new item
         else {
+            System.out.println("Product not present, creating cart item and inserting");
             cartItem = new CartItem();
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
         }
 
-        CartItem savedCartItem = cartItemRepository.save(cartItem);
-        System.out.println("savedCartItem : " + savedCartItem);
+        userRepository.save(user);
+        cartItemRepository.save(cartItem);
+
+//        System.out.println(user.getId());
+//        System.out.println(cart.getId());
+//        System.out.println(cartItem.getId());
+
+//        CartItem savedCartItem = cartItemRepository.save(cartItem);
+//        System.out.println("savedCartItem : " + savedCartItem);
+
+//        System.out.println("User: " + user + "\n" + "Cart: " + cart + "\n" + "CartItem: " + cartItem);
 
         return "Done";
     }
 
-    public List<Cart> getAllCarts() {
-        return cartRepository.findAll();
-    }
+//    public List<Cart> getAllCarts() {
+//        return cartRepository.findAll();
+//    }
 
     public Cart getCart(Long cartId) {
         return cartRepository.findById(cartId).get();

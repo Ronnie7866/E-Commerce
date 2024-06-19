@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Service
 @AllArgsConstructor
 public class TransactionService {
-    
+
     TransactionRepository transactionRepository;
 
     public List<Transaction> getAllTransactions() {

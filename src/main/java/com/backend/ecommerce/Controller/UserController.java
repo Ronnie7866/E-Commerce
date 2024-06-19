@@ -1,15 +1,13 @@
 
 package com.backend.ecommerce.Controller;
 
-import com.backend.ecommerce.Entity.Address;
+//import com.backend.ecommerce.Entity.Address;
 import com.backend.ecommerce.Entity.User;
-import com.backend.ecommerce.Repository.AddressRepository;
-import com.backend.ecommerce.Service.AddressService;
+//import com.backend.ecommerce.Repository.AddressRepository;
+//import com.backend.ecommerce.Service.AddressService;
 import com.backend.ecommerce.Service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +20,8 @@ public class UserController {
 
 
     private final UserService userService;
-    private final AddressService addressService;
-    private final AddressRepository addressRepository;
+//    private final AddressService addressService;
+//    private final AddressRepository addressRepository;
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -41,12 +39,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
+//        System.out.println(user);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
+        System.out.println(users);
         return ResponseEntity.ok(users);
     }
 
