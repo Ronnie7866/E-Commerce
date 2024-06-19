@@ -2,11 +2,13 @@
 package com.backend.ecommerce.implementation;
 
 import com.backend.ecommerce.dto.CustomModelMapper;
+import com.backend.ecommerce.dto.EmailDetails;
 import com.backend.ecommerce.dto.UserDTO;
 //import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.exception.DuplicateEntryException;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.repository.EmailService;
 import com.backend.ecommerce.repository.UserRepository;
 //import com.backend.ecommerce.security.JwtService;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
     private final UserRepository userRepository;
 //    private final PasswordEncoder passwordEncoder;
     private final CustomModelMapper customModelMapper;
+    private final EmailService emailService;
 //    private final JwtService jwtService;
 
 
@@ -45,6 +48,12 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
         if (!userRepository.existsByEmail(userDTO.email())) {
             User user = customModelMapper.reverse(userDTO);
             User savedUser = userRepository.save(user);
+            EmailDetails emailDetails = EmailDetails.builder()
+                    .recipient(savedUser.getEmail())
+                    .subject("Account Creation")
+                    .messageBody("Congratulations! You have successfully created your account!")
+                    .build();
+            emailService.sendEmailAlert(emailDetails);
             return customModelMapper.apply(userRepository.save(savedUser));
         }
         throw new DuplicateEntryException("Email already exists");
