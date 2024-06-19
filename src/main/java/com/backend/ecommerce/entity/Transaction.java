@@ -1,6 +1,7 @@
 package com.backend.ecommerce.entity;
 
 import com.backend.ecommerce.enums.TransactionType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -41,9 +42,10 @@ public class Transaction {
     private LocalDateTime modifiedat;
 
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonBackReference
     private Order order;
 }

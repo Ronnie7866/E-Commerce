@@ -3,6 +3,7 @@ package com.backend.ecommerce.entity;
 
 //import com.backend.ecommerce.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,7 @@ public class User  {
 //    private Role role;
 
     @OneToOne(cascade = CascadeType.ALL) //todo socho
+    @JsonManagedReference
     private Order order;
 
     @JsonIgnore
@@ -48,6 +50,7 @@ public class User  {
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Transaction> transaction = new ArrayList<>();
 
 //    public User(String s, String s1) {}

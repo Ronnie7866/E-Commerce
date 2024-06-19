@@ -6,6 +6,8 @@ import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.enums.OrderStatus;
 import com.backend.ecommerce.enums.TransactionType;
 import com.backend.ecommerce.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
     private final OrderProductsRepository orderProductsRepository;
     private final CartRepository cartRepository;
     private final CartProductsRepository cartProductsRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Override
@@ -134,30 +138,39 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
         transaction.setTransactionAmount(transactionAmount);
         transaction.setUser(user);
         transaction.setOrder(order); // Set the relationship
-        System.out.println("Transaction saved: " + transaction);
-        transactionRepository.save(transaction);
-
-
-        // Add transaction to order
         order.setTransaction(transaction);
+        System.out.println("Transaction created: " + transaction);
+
+        // Save the order
+        orderRepository.save(order);
+        System.out.println("Order saved: " + order);
+
+        // Save the transaction
+        transactionRepository.save(transaction);
+        System.out.println("Transaction saved: " + transaction);
+
+//        // Add transaction to order
+//        order.setTransaction(transaction);
+//        orderRepository.save(order);  // Ensure the transaction is associated with the order
+//        System.out.println("Order updated with transaction: " + order);
 
         // Set the order in each orderProduct
         for (OrderProducts orderProduct : orderProducts) {
             orderProduct.setOrder(order);
         }
 
-        // Save the order
-        orderRepository.save(order);
-        System.out.println("Order saved: " + order);
+        // Ensure the deletion of cart products
+        System.out.println("ye hai cart Id "+cartId);
+        cartProductsRepository.deleteAll(cartProducts);
+        System.out.println("Cart products deleted individually");
 
-        // Clear the cart (optional)
+        // Flush and clear the EntityManager to force execution
+        entityManager.flush();
+        entityManager.clear();
+
+        // Delete the cart
         cartRepository.deleteById(cartId);
-
-
-        System.out.println(cart);
-        System.out.println(cartProducts);
-        cartRepository.deleteById(cartId);
-        System.out.println("Cart and cart products deleted");
+        System.out.println("Cart deleted");
 
         return order;
     }

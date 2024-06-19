@@ -3,6 +3,8 @@ package com.backend.ecommerce.entity;
 
 import com.backend.ecommerce.enums.AvailabilityStatus;
 import com.backend.ecommerce.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,12 +36,15 @@ public class Order {
     private OrderStatus orderStatus;
 
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Transaction transaction;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @JsonManagedReference
     private List<OrderProducts> orderProducts = new ArrayList<>();
 
 //    @ManyToOne

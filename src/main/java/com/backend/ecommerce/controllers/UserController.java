@@ -2,6 +2,7 @@
 package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.dto.UserDTO;
+import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final CartProductsRepository cartProductsRepository;
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
