@@ -20,7 +20,8 @@ public class OrderProducts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productId;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Product product;
     private Integer quantity;
 
     @ManyToOne

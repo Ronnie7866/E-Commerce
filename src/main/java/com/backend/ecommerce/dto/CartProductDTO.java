@@ -1,10 +1,10 @@
 package com.backend.ecommerce.dto;
 
-import lombok.Data;
+import com.backend.ecommerce.entity.Product;
 
 
 public record CartProductDTO ( Long id,
-         String productId,
+         Product product,
          Integer quantity,
          String availabilityStatus) {
 }

@@ -22,10 +22,9 @@ public class OrderController {
 
     @PostMapping("checkout")
     public Order checkout(@RequestParam Long userId,
-                          @RequestParam Long cartId,
                           @RequestParam TransactionType transactionType,
                           @RequestParam BigDecimal transactionAmount) {
-        return orderService.checkout(userId, cartId, transactionType, transactionAmount);
+        return orderService.checkout(userId, transactionType, transactionAmount);
     }
 
 

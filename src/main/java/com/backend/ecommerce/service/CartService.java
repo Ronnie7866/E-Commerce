@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public interface CartService {
-    CartProducts addProductToCart(Long userId, String productId, Integer quantity);
+    CartProducts addProductToCart(Long userId, Long productId, Integer quantity);
 
     List<Cart> getAllCarts();
 
@@ -36,7 +36,7 @@ public interface CartService {
                 "UNAVAILABLE"; // Default to UNAVAILABLE if null
         return new CartProductDTO(
                 cartProduct.getId(),
-                cartProduct.getProductId(),
+                cartProduct.getProduct(),
                 cartProduct.getQuantity(),
                 availabilityStatus
         );

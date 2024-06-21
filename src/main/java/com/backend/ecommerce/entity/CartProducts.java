@@ -18,15 +18,12 @@ public class CartProducts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @JsonBackReference
     private Cart cart;
 
-    @Column(name = "product_id")
-    private String productId;
-
-    @Transient
+    @OneToOne(cascade = CascadeType.ALL)
     private Product product;
 
     private Integer quantity;

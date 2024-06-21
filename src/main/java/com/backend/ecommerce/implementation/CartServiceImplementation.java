@@ -1,13 +1,13 @@
 package com.backend.ecommerce.implementation;
 
 import com.backend.ecommerce.dto.CartDTO;
-import com.backend.ecommerce.dto.CartProductDTO;
 import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.repository.CartRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.repository.UserRepository;
 import com.backend.ecommerce.dto.CartItemsDTO;
+import com.backend.ecommerce.service.CartService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Slf4j
-public class CartServiceImplementation implements com.backend.ecommerce.service.CartService {
+public class CartServiceImplementation implements CartService {
 
     private UserRepository userRepository;
     private CartRepository cartRepository;
@@ -31,8 +30,9 @@ public class CartServiceImplementation implements com.backend.ecommerce.service.
      * or creates a new cartItem in the cart, if product was not already in the cart
      * or updates the quantity of the product if it was already present in the cart
      **/
+
     @Override
-    public CartProducts addProductToCart(Long userId, String productId, Integer quantity) {// TODO fix the infinite recursion
+    public CartProducts addProductToCart(Long userId, Long productId, Integer quantity) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -71,7 +71,7 @@ public class CartServiceImplementation implements com.backend.ecommerce.service.
         else {
             cartProducts = new CartProducts();
             cartProducts.setCart(cart);
-            cartProducts.setProductId(productId);
+            cartProducts.setProduct(product);
             cartProducts.setQuantity(quantity);
         }
 

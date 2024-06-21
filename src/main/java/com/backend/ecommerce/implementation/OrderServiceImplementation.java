@@ -6,6 +6,7 @@ import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.enums.OrderStatus;
 import com.backend.ecommerce.enums.TransactionType;
 import com.backend.ecommerce.repository.*;
+import com.backend.ecommerce.service.OrderService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Transactional
-public class OrderServiceImplementation implements com.backend.ecommerce.service.OrderService {
+public class OrderServiceImplementation implements OrderService {
 
     private final OrderRepository orderRepository;
     private final TransactionRepository transactionRepository;
@@ -28,8 +29,6 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
     private final OrderProductsRepository orderProductsRepository;
     private final CartRepository cartRepository;
     private final CartProductsRepository cartProductsRepository;
-    @PersistenceContext
-    private EntityManager entityManager;
 
 
     @Override
@@ -52,7 +51,7 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
             // Create OrderProduct entity
             OrderProducts orderProducts = new OrderProducts();
             orderProducts.setOrder(order);
-            orderProducts.setProductId(product.getId());
+            orderProducts.setProduct(product);
             orderProducts.setQuantity(productRequest.getQuantity());
 
             // Save OrderProducts entity
@@ -88,7 +87,7 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
         List<OrderProducts> orderProductsList = cart.getCartProducts().stream().map(cartProduct -> {
             OrderProducts orderProduct = new OrderProducts();
             orderProduct.setOrder(order);
-            orderProduct.setProductId(cartProduct.getProductId());
+            orderProduct.setProduct(cartProduct.getProduct());
             orderProduct.setQuantity(cartProduct.getQuantity());
             return orderProduct;
         }).collect(Collectors.toList());
@@ -100,15 +99,15 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
 
     @Override
     @Transactional
-    public Order checkout(Long userId, Long cartId, TransactionType transactionType, BigDecimal transactionAmount) {
+    public Order checkout(Long userId, TransactionType transactionType, BigDecimal transactionAmount) {
         // Fetch the user
         System.out.println("Fetching user with ID: " + userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
         System.out.println("User found: " + user);
 
         // Fetch the cart
-        System.out.println("Fetching cart with ID: " + cartId);
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart Not Found"));
+        System.out.println("Fetching cart with ID: " + user.getCart().getId());
+        Cart cart = cartRepository.findById(user.getCart().getId()).orElseThrow(() -> new RuntimeException("Cart Not Found"));
         System.out.println("Cart found: " + cart);
 
         // Fetch and validate cart products
@@ -121,7 +120,7 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
         // Convert cart products to order products
         List<OrderProducts> orderProducts = cartProducts.stream().map(cartProduct -> {
             OrderProducts orderProduct = new OrderProducts();
-            orderProduct.setProductId(cartProduct.getProductId());
+            orderProduct.setProduct(cartProduct.getProduct());
             orderProduct.setQuantity(cartProduct.getQuantity());
             return orderProduct;
         }).collect(Collectors.toList());
@@ -149,27 +148,18 @@ public class OrderServiceImplementation implements com.backend.ecommerce.service
         transactionRepository.save(transaction);
         System.out.println("Transaction saved: " + transaction);
 
-//        // Add transaction to order
-//        order.setTransaction(transaction);
-//        orderRepository.save(order);  // Ensure the transaction is associated with the order
-//        System.out.println("Order updated with transaction: " + order);
+        // Add transaction to order
+        order.setTransaction(transaction);
+        orderRepository.save(order);  // Ensure the transaction is associated with the order
+        System.out.println("Order updated with transaction: " + order);
 
         // Set the order in each orderProduct
         for (OrderProducts orderProduct : orderProducts) {
             orderProduct.setOrder(order);
         }
 
-        // Ensure the deletion of cart products
-        System.out.println("ye hai cart Id "+cartId);
-        cartProductsRepository.deleteAll(cartProducts);
-        System.out.println("Cart products deleted individually");
-
-        // Flush and clear the EntityManager to force execution
-        entityManager.flush();
-        entityManager.clear();
-
         // Delete the cart
-        cartRepository.deleteById(cartId);
+        cartRepository.deleteByUserId(userId);
         System.out.println("Cart deleted");
 
         return order;

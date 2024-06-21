@@ -9,7 +9,7 @@ public interface CategoryService {
 
     Category findById(Long id);
 
-    List<Category> getCategoryByProductId(String productId);
+    List<Category> getCategoryByProductId(Long productId);
 
     Category create(Category category);
 

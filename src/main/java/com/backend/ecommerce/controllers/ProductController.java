@@ -36,19 +36,19 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product productById = productService.getProductById(id);
         return ResponseEntity.ok(productById);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable String id) {
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable Long id) {
         Product updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
     @PostMapping("/mapCategory")
-    public ResponseEntity<Product> assignProductWithCategory(@RequestParam String productId, @RequestParam Long categoryId) {
+    public ResponseEntity<Product> assignProductWithCategory(@RequestParam Long productId, @RequestParam Long categoryId) {
         Product product = productService.assignCategoryToProduct(productId, categoryId);
         return ResponseEntity.ok(product);
     }

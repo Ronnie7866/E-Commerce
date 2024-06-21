@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CartItemsDTO {
 
     Long cartItemId;
-    String productId;
+    Product product;
     String productName;
     Integer quantity;
     BigDecimal unitPrice;
@@ -28,7 +28,7 @@ public class CartItemsDTO {
     public CartItemsDTO(CartProducts ci){
         Product p = ci.getProduct();
         this.cartItemId = ci.getId();
-        this.productId = p.getId();
+        this.product = ci.getProduct();
         this.productName = p.getName();
         this.unitPrice = p.getPrice();
         this.totalPrice = p.getPrice().multiply(BigDecimal.valueOf(ci.getQuantity()));

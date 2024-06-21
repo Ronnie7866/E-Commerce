@@ -5,6 +5,7 @@ import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.repository.CategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
+import com.backend.ecommerce.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class CategoryServiceImplementation implements com.backend.ecommerce.service.CategoryService {
+public class CategoryServiceImplementation implements CategoryService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -30,15 +31,11 @@ public class CategoryServiceImplementation implements com.backend.ecommerce.serv
     }
 
     @Override
-    public List<Category> getCategoryByProductId(String productId) {
+    public List<Category> getCategoryByProductId(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found with this id"));
-        List<Category> categoryList = new ArrayList<>();
-        for (var i : product.getCategoryIds()) {
-            Category cat = categoryRepository.findById(i).get();
-            categoryList.add(cat);
-        }
-        return categoryList;
+        return new ArrayList<>(product.getCategory());
     }
+
     @Override
     public Category create(Category category) {
         return categoryRepository.save(category);
@@ -55,7 +52,7 @@ public class CategoryServiceImplementation implements com.backend.ecommerce.serv
         Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with this id"));
         existingCategory.setName(category.getName());
         existingCategory.setDescription(category.getDescription());
-        existingCategory.setProductIds(category.getProductIds());
+        existingCategory.setProducts(category.getProducts());
         return categoryRepository.save(existingCategory);
     }
 

@@ -45,7 +45,7 @@ public class User  {
     private List<Address> addressList = new ArrayList<>();
 
 
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Cart cart;
 

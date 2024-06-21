@@ -14,13 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Document(collection = "products")
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Product {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private BigDecimal price;
     private String description;
@@ -33,9 +35,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private AvailabilityStatus availability;
 
-    private List<Long> categoryIds = new ArrayList<>();
-    private Long transactionId;
-    private List<Seller> sellers = new ArrayList<>();
-    private List<Long> productImageIds = new ArrayList<>();
+    @ManyToMany(mappedBy = "products")
+    private List<Category> category = new ArrayList<>();
+
+
+
+//    @OneToMany
+//    private List<Long> productImageIds = new ArrayList<>();
 }
 

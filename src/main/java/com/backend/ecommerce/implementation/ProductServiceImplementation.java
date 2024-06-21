@@ -5,6 +5,7 @@ import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.repository.CategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
+import com.backend.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ProductServiceImplementation implements com.backend.ecommerce.service.ProductService {
+public class ProductServiceImplementation implements ProductService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
@@ -39,12 +40,12 @@ public class ProductServiceImplementation implements com.backend.ecommerce.servi
     }
 
     @Override
-    public Product getProductById(String id) {
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Product updateProduct(String id, Product product) {
+    public Product updateProduct(Long id, Product product) {
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         existingProduct.setId(product.getId());
         existingProduct.setName(product.getName());
@@ -55,23 +56,19 @@ public class ProductServiceImplementation implements com.backend.ecommerce.servi
     @Override
     public List<Product> getProductByCategory(Long catId) {
         Category category = categoryRepository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("Category not found with this Id : " + catId));
-        List<Product> productList = new ArrayList<>();
-        for (var i : category.getProductIds()) {
-            Product product = productRepository.findById(i).orElseThrow(() -> new ResourceNotFoundException("Product not found with this id : " + i));
-            productList.add(product);
-        }
-        return productList;
+        return new ArrayList<>(category.getProducts());
     }
 
     @Override
-    public Product assignCategoryToProduct(String productId, Long categoryId) {
+    public Product assignCategoryToProduct(Long productId, Long categoryId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+
         Long id = category.getId();
-        product.getCategoryIds().add(id);
+//        product.getCategoryIds().add(id);// TODO fix this function
         return productRepository.save(product);
     }
 }

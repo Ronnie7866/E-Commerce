@@ -17,6 +17,9 @@ public class Category {
     private String name;
     private String description;
 
-    @ElementCollection
-    private List<String> productIds = new ArrayList<>();
+//    @ElementCollection
+//    private List<String> productIds = new ArrayList<>();
+
+    @ManyToMany
+    List<Product> products = new ArrayList<>();
 }
