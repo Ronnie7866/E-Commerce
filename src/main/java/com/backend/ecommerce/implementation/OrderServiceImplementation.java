@@ -4,6 +4,7 @@ import com.backend.ecommerce.dto.OrderProductRequest;
 import com.backend.ecommerce.dto.OrderRequest;
 import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.enums.OrderStatus;
+import com.backend.ecommerce.enums.TransactionStatus;
 import com.backend.ecommerce.enums.TransactionType;
 import com.backend.ecommerce.repository.*;
 import com.backend.ecommerce.service.OrderService;
@@ -28,7 +29,6 @@ public class OrderServiceImplementation implements OrderService {
     private final ProductRepository productRepository;
     private final OrderProductsRepository orderProductsRepository;
     private final CartRepository cartRepository;
-    private final CartProductsRepository cartProductsRepository;
 
 
     @Override
@@ -95,75 +95,5 @@ public class OrderServiceImplementation implements OrderService {
         order.setOrderProducts(orderProductsList);
 
         return orderRepository.save(order);
-    }
-
-    @Override
-    @Transactional
-    public Order checkout(Long userId, TransactionType transactionType, BigDecimal transactionAmount) {
-        // Fetch the user
-        System.out.println("Fetching user with ID: " + userId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
-        System.out.println("User found: " + user);
-
-        // Fetch the cart
-        System.out.println("Fetching cart with ID: " + user.getCart().getId());
-        Cart cart = cartRepository.findById(user.getCart().getId()).orElseThrow(() -> new RuntimeException("Cart Not Found"));
-        System.out.println("Cart found: " + cart);
-
-        // Fetch and validate cart products
-        List<CartProducts> cartProducts = cart.getCartProducts();
-        if (cartProducts.isEmpty()) {
-            throw new RuntimeException("Cart is empty");
-        }
-        System.out.println("Cart products found: " + cartProducts);
-
-        // Convert cart products to order products
-        List<OrderProducts> orderProducts = cartProducts.stream().map(cartProduct -> {
-            OrderProducts orderProduct = new OrderProducts();
-            orderProduct.setProduct(cartProduct.getProduct());
-            orderProduct.setQuantity(cartProduct.getQuantity());
-            return orderProduct;
-        }).collect(Collectors.toList());
-
-        // Create the order
-        Order order = new Order();
-        order.setUser(user);
-        order.setOrderStatus(OrderStatus.PENDING);
-        order.setOrderProducts(orderProducts);
-
-        // Create and save the transaction
-        Transaction transaction = new Transaction();
-        transaction.setTransactionType(transactionType);
-        transaction.setTransactionAmount(transactionAmount);
-        transaction.setUser(user);
-        transaction.setOrder(order); // Set the relationship
-        order.setTransaction(transaction);
-        System.out.println("Transaction created: " + transaction);
-
-        // Save the order
-        orderRepository.save(order);
-        System.out.println("Order saved: " + order);
-
-        // Save the transaction
-        transactionRepository.save(transaction);
-        System.out.println("Transaction saved: " + transaction);
-
-        // Add transaction to order
-        order.setTransaction(transaction);
-        orderRepository.save(order);  // Ensure the transaction is associated with the order
-        System.out.println("Order updated with transaction: " + order);
-
-        // Set the order in each orderProduct
-        for (OrderProducts orderProduct : orderProducts) {
-            orderProduct.setOrder(order);
-        }
-
-        cartProductsRepository.deleteAll(cartProducts);
-
-        // Delete the cart
-        cartRepository.deleteByUserId(userId);
-        System.out.println("Cart deleted");
-
-        return order;
     }
 }

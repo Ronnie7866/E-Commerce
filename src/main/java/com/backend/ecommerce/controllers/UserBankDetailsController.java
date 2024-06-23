@@ -3,6 +3,7 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.entity.UserBankDetails;
 import com.backend.ecommerce.service.UserBankDetailsService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/bankdetails")
+@RequestMapping("/api/addBankDetails")
 @AllArgsConstructor
 public class UserBankDetailsController {
 
@@ -22,7 +23,7 @@ public class UserBankDetailsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserBankDetails> getBankDetailsById(@PathVariable int id) {
+    public ResponseEntity<UserBankDetails> getBankDetailsById(@PathVariable Long id) {
         Optional<UserBankDetails> bankDetails = userBankDetailsService.getBankDetailsById(id);
         return bankDetails.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -33,7 +34,7 @@ public class UserBankDetailsController {
     }
 
     @GetMapping("/primary/{isPrimary}")
-    public List<UserBankDetails> getPrimaryBankDetails(@PathVariable boolean isPrimary) {
+    public List<UserBankDetails> getPrimaryBankDetails(@PathVariable Boolean isPrimary) {
         return userBankDetailsService.getPrimaryBankDetails(isPrimary);
     }
 
@@ -42,13 +43,13 @@ public class UserBankDetailsController {
         return userBankDetailsService.getBankDetailsByStatus(status);
     }
 
-    @PostMapping
-    public UserBankDetails saveBankDetails(@RequestBody UserBankDetails bankDetails) {
-        return userBankDetailsService.saveBankDetails(bankDetails);
+    @PostMapping("/{id}")
+    public UserBankDetails saveBankDetails(@PathVariable Long id, @RequestBody UserBankDetails bankDetails) {
+        return userBankDetailsService.saveBankDetails(id, bankDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBankDetails(@PathVariable int id) {
+    public ResponseEntity<Void> deleteBankDetails(@PathVariable Long id) {
         userBankDetailsService.deleteBankDetails(id);
         return ResponseEntity.noContent().build();
     }

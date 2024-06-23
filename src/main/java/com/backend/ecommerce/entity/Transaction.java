@@ -1,5 +1,6 @@
 package com.backend.ecommerce.entity;
 
+import com.backend.ecommerce.enums.TransactionStatus;
 import com.backend.ecommerce.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,10 +24,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)     //TODO debit credit NEFT IMPS
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    private String transactionStatus; //TODO ENUM enum('pending', 'shipped', 'delivered', 'refunded') [default: 'pending']
+    private TransactionStatus transactionStatus;
 
     private BigDecimal transactionAmount;
 

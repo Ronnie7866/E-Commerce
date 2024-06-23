@@ -3,7 +3,9 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.dto.OrderRequest;
 import com.backend.ecommerce.entity.Order;
 import com.backend.ecommerce.enums.TransactionType;
+import com.backend.ecommerce.implementation.OrderServiceImplementation;
 import com.backend.ecommerce.service.OrderService;
+import com.backend.ecommerce.service.payment.CheckoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +20,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderService orderService;
+    private final CheckoutService checkoutService;
+    private final OrderServiceImplementation orderService;
 
     @PostMapping("checkout")
     public Order checkout(@RequestParam Long userId,
                           @RequestParam TransactionType transactionType,
                           @RequestParam BigDecimal transactionAmount) {
-        return orderService.checkout(userId, transactionType, transactionAmount);
+        return checkoutService.checkout(userId, transactionType, transactionAmount);
     }
 
 

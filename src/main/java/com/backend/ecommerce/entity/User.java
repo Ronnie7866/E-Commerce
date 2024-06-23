@@ -5,10 +5,7 @@ package com.backend.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 //import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +19,8 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class User  {
     @Id
@@ -64,8 +63,9 @@ public class User  {
     @JsonManagedReference
     private List<Transaction> transaction = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<UserBankDetails> bankDetails = new ArrayList<>();
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private UserBankDetails userBankDetails;
 
 //    public User(String s, String s1) {}
 

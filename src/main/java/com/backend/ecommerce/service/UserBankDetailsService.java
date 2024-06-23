@@ -11,15 +11,15 @@ public interface UserBankDetailsService {
 
     List<UserBankDetails> getAllBankDetails();
 
-    Optional<UserBankDetails> getBankDetailsById(int id);
+    Optional<UserBankDetails> getBankDetailsById(Long id);
 
     List<UserBankDetails> getBankDetailsByUserId(Long userId);
 
-    List<UserBankDetails> getPrimaryBankDetails(boolean isPrimary);
+    List<UserBankDetails> getPrimaryBankDetails(Boolean isPrimary);
 
     List<UserBankDetails> getBankDetailsByStatus(String status);
 
-    UserBankDetails saveBankDetails(UserBankDetails bankDetails);
+    UserBankDetails saveBankDetails(Long userId, UserBankDetails bankDetails);
 
-    void deleteBankDetails(int id);
+    void deleteBankDetails(Long id);
 }

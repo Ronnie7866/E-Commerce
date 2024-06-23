@@ -17,6 +17,4 @@ public interface OrderService {
 
     Order convertCartToOrder(Long cartId);
 
-    @Transactional
-    Order checkout(Long userId, TransactionType transactionType, BigDecimal transactionAmount);
 }

@@ -1,11 +1,13 @@
 package com.backend.ecommerce.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -20,8 +22,9 @@ public class UserBankDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     private String accountHolderName;
@@ -30,7 +33,8 @@ public class UserBankDetails {
     private String branchName;
     private String ifscCode;
     private String accountType;
-    private boolean isPrimary;
+    private Boolean isPrimary;
     private String status;
+    @CreatedDate
     private LocalDateTime dateAdded;
 }
