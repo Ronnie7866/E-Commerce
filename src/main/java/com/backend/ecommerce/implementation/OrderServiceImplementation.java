@@ -158,6 +158,8 @@ public class OrderServiceImplementation implements OrderService {
             orderProduct.setOrder(order);
         }
 
+        cartProductsRepository.deleteAll(cartProducts);
+
         // Delete the cart
         cartRepository.deleteByUserId(userId);
         System.out.println("Cart deleted");

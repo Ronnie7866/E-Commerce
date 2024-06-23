@@ -9,10 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -36,6 +39,14 @@ public class User  {
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
 
+    @CreationTimestamp
+    @Column(name = "createdat", nullable = false)
+    private LocalDateTime createdat;
+
+    @UpdateTimestamp
+    @Column(name = "modifiedat", nullable = false)
+    private LocalDateTime modifiedat;
+
     @OneToOne(cascade = CascadeType.ALL) //todo socho
     @JsonManagedReference
     private Order order;
@@ -52,6 +63,9 @@ public class User  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Transaction> transaction = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserBankDetails> bankDetails = new ArrayList<>();
 
 //    public User(String s, String s1) {}
 
