@@ -21,22 +21,17 @@ public class CheckoutService {
     private final OrderRepository orderRepository;
     private final TransactionRepository transactionRepository;
     private final CartProductsRepository cartProductsRepository;
-    private final PaymentContext paymentContext;
 
-    @Autowired
-    public CheckoutService(UserRepository userRepository,
-                           CartRepository cartRepository,
-                           OrderRepository orderRepository,
-                           TransactionRepository transactionRepository,
-                           CartProductsRepository cartProductsRepository,
-                           PaymentContext paymentContext) {
+    public CheckoutService(UserRepository userRepository, CartRepository cartRepository, OrderRepository orderRepository, TransactionRepository transactionRepository, CartProductsRepository cartProductsRepository) {
         this.userRepository = userRepository;
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
         this.transactionRepository = transactionRepository;
         this.cartProductsRepository = cartProductsRepository;
-        this.paymentContext = paymentContext;
     }
+//    private final PaymentContext paymentContext;
+
+
 
     @Transactional
     public Order checkout(Long userId, TransactionType transactionType, BigDecimal transactionAmount) {
@@ -72,11 +67,11 @@ public class CheckoutService {
         transaction.setUser(user);
         transaction.setOrder(order);
 
-        PaymentStrategy paymentStrategy = paymentContext.getPaymentStrategy(transactionType);
-        boolean isPaymentSuccessful = paymentStrategy.processPayment(user, transactionAmount);
-        if (!isPaymentSuccessful) {
-            throw new RuntimeException("Payment Failed");
-        }
+//        PaymentStrategy paymentStrategy = paymentContext.getPaymentStrategy(transactionType);
+//        boolean isPaymentSuccessful = paymentStrategy.processPayment(user, transactionAmount);
+//        if (!isPaymentSuccessful) {
+//            throw new RuntimeException("Payment Failed");
+//        }
 
         transaction.setTransactionStatus(TransactionStatus.COMPLETED);
 
