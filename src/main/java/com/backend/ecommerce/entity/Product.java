@@ -1,6 +1,7 @@
 package com.backend.ecommerce.entity;
 
 import com.backend.ecommerce.enums.AvailabilityStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,12 +31,18 @@ public class Product {
     private BigDecimal averageRating;
     private LocalDateTime dateAdded;
     private LocalDateTime dateUpdated;
+    private String poster;
+    private String posterURL;
 
     @Enumerated(EnumType.STRING)
     private AvailabilityStatus availability;
 
     @ManyToMany(mappedBy = "products")
     private List<Category> category = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<ProductImageTable> productImages = new ArrayList<>();
 
 
 
