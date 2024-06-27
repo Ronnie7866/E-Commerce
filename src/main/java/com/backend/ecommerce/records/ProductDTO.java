@@ -1,4 +1,4 @@
-package com.backend.ecommerce.dto;
+package com.backend.ecommerce.records;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -33,4 +33,9 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleUserHasNoRoleException(Exception exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
+
+    @ExceptionHandler(PasswordDidNotMatchException.class)
+    public ProblemDetail handlePasswordDidNotMatch(Exception exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
 }

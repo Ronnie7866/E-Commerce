@@ -1,6 +1,6 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.dto.UserDTO;
+import com.backend.ecommerce.records.UserDTO;
 
 import java.util.List;
 

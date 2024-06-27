@@ -1,6 +1,6 @@
 package com.backend.ecommerce.security;
 
-import com.backend.ecommerce.exception.ErrorMessage;
+import com.backend.ecommerce.records.ErrorMessage;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

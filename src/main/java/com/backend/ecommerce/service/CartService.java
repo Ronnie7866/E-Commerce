@@ -1,8 +1,8 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.dto.CartDTO;
+import com.backend.ecommerce.records.CartDTO;
 import com.backend.ecommerce.dto.CartItemsDTO;
-import com.backend.ecommerce.dto.CartProductDTO;
+import com.backend.ecommerce.records.CartProductDTO;
 import com.backend.ecommerce.entity.Cart;
 import com.backend.ecommerce.entity.CartProducts;
 

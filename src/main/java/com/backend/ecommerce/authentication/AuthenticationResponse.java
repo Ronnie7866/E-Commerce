@@ -1,7 +1,6 @@
 package com.backend.ecommerce.authentication;
 
-import com.backend.ecommerce.dto.UserDTO;
-import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.records.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

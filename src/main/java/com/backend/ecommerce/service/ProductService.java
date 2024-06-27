@@ -1,6 +1,6 @@
 package com.backend.ecommerce.service;
 
-import com.backend.ecommerce.dto.ProductResponse;
+import com.backend.ecommerce.records.ProductResponse;
 import com.backend.ecommerce.entity.Product;
 
 import java.util.List;

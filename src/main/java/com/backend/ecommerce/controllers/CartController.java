@@ -1,6 +1,6 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.dto.CartDTO;
+import com.backend.ecommerce.records.CartDTO;
 import com.backend.ecommerce.entity.Cart;
 import com.backend.ecommerce.entity.CartProducts;
 import com.backend.ecommerce.dto.CartItemsDTO;

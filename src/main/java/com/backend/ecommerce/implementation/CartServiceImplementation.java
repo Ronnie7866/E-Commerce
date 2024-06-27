@@ -1,6 +1,6 @@
 package com.backend.ecommerce.implementation;
 
-import com.backend.ecommerce.dto.CartDTO;
+import com.backend.ecommerce.records.CartDTO;
 import com.backend.ecommerce.entity.*;
 import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.repository.CartRepository;

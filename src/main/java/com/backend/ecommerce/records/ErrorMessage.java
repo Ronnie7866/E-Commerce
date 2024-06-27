@@ -1,4 +1,4 @@
-package com.backend.ecommerce.exception;
+package com.backend.ecommerce.records;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;

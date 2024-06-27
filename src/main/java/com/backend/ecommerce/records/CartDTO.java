@@ -1,6 +1,4 @@
-package com.backend.ecommerce.dto;
-
-import lombok.Data;
+package com.backend.ecommerce.records;
 
 import java.util.List;
 

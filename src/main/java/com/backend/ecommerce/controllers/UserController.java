@@ -1,7 +1,7 @@
 
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.dto.UserDTO;
+import com.backend.ecommerce.records.UserDTO;
 import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;

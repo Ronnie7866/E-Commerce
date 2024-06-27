@@ -1,11 +1,10 @@
 package com.backend.ecommerce.implementation;
 
-import com.backend.ecommerce.dto.ProductResponse;
+import com.backend.ecommerce.records.ProductResponse;
 import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.exception.CategoryNotFoundException;
 import com.backend.ecommerce.exception.ProductNotFoundException;
-import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.repository.CategoryRepository;
 import com.backend.ecommerce.repository.ProductRepository;
 import com.backend.ecommerce.service.ProductService;

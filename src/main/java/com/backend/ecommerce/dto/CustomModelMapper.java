@@ -1,6 +1,7 @@
 package com.backend.ecommerce.dto;
 
 import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.records.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;

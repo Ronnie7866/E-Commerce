@@ -4,7 +4,7 @@ import com.backend.ecommerce.authentication.AuthenticationRequest;
 import com.backend.ecommerce.authentication.AuthenticationResponse;
 import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.CustomModelMapper;
-import com.backend.ecommerce.dto.UserDTO;
+import com.backend.ecommerce.records.UserDTO;
 import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.repository.UserRepository;

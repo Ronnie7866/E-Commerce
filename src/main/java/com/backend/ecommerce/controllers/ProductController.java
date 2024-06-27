@@ -1,7 +1,7 @@
 package com.backend.ecommerce.controllers;
 
 
-import com.backend.ecommerce.dto.ProductResponse;
+import com.backend.ecommerce.records.ProductResponse;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.service.CategoryService;
 import com.backend.ecommerce.service.ProductService;
