@@ -1,9 +1,11 @@
 package com.backend.ecommerce.controllers;
 
 
+import com.backend.ecommerce.dto.ProductResponse;
 import com.backend.ecommerce.entity.Product;
 import com.backend.ecommerce.service.CategoryService;
 import com.backend.ecommerce.service.ProductService;
+import com.backend.ecommerce.utility.AppConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,5 +59,25 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long id) {
         List<Product> productByCategory = productService.getProductByCategory(id);
         return ResponseEntity.ok(productByCategory);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+        Product product = productService.deleteProduct(id);
+        return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/allProductPage")
+    public ResponseEntity<ProductResponse> getAllProductPage(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                                   @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize) {
+        return ResponseEntity.ok(productService.getAllProductWithPagination(pageNumber, pageSize));
+    }
+
+    @GetMapping("/allProductPageWithPagination")
+    public ResponseEntity<ProductResponse> getAllProductPage(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                             @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                             @RequestParam(defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+                                                             @RequestParam(defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder) {
+        return ResponseEntity.ok(productService.getProductWithPaginationAndSorting(pageNumber, pageSize, sortBy, sortOrder));
     }
 }

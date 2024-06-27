@@ -31,8 +31,6 @@ public class Product {
     private BigDecimal averageRating;
     private LocalDateTime dateAdded;
     private LocalDateTime dateUpdated;
-    private String poster;
-    private String posterURL;
 
     @Enumerated(EnumType.STRING)
     private AvailabilityStatus availability;

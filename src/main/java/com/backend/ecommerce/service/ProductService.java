@@ -1,5 +1,6 @@
 package com.backend.ecommerce.service;
 
+import com.backend.ecommerce.dto.ProductResponse;
 import com.backend.ecommerce.entity.Product;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface ProductService {
     List<Product> getProductByCategory(Long catId);
 
     Product assignCategoryToProduct(Long productId, Long categoryId);
+
+    Product deleteProduct(Long id);
+
+    ProductResponse getAllProductWithPagination(Integer pageNo, Integer pageSize);
+
+    ProductResponse getProductWithPaginationAndSorting(Integer pageNo, Integer pageSize, String sortBy, String sortOrder);
 }

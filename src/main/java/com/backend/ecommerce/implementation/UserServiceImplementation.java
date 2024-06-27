@@ -8,6 +8,7 @@ import com.backend.ecommerce.dto.UserDTO;
 import com.backend.ecommerce.exception.DuplicateEntryException;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.exception.UserNotFoundException;
 import com.backend.ecommerce.repository.EmailService;
 import com.backend.ecommerce.repository.UserRepository;
 //import com.backend.ecommerce.security.JwtService;
@@ -61,7 +62,7 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
 
     @Override
     public UserDTO getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with this id " + id + " not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with this id " + id + " not found"));
         return customModelMapper.apply(user);
     }
 
@@ -75,7 +76,7 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
         if (isDuplicate(userDTO)) {
             throw new DuplicateEntryException(userDTO.email());
         }
-        User existingUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with this id : " + userId));
+        User existingUser = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found with this id : " + userId));
         User updatedValues = customModelMapper.reverse(userDTO);
 
         BeanUtils.copyProperties(updatedValues, existingUser, "id", "password");
@@ -96,7 +97,7 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
 
     @Override
     public UserDTO getUserByEmail(String email) {
-        return customModelMapper.apply(userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User with the " + email + " not found")));
+        return customModelMapper.apply(userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with the " + email + " not found")));
     }
 
 //    public UserDTO register(UserDTO userDTO) {
