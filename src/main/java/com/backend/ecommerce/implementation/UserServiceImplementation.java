@@ -1,10 +1,13 @@
 
 package com.backend.ecommerce.implementation;
 
+import com.backend.ecommerce.authentication.AuthenticationResponse;
+import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.CustomModelMapper;
 import com.backend.ecommerce.dto.EmailDetails;
 import com.backend.ecommerce.dto.UserDTO;
 //import com.backend.ecommerce.enums.Role;
+import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.exception.DuplicateEntryException;
 import com.backend.ecommerce.exception.ResourceNotFoundException;
 import com.backend.ecommerce.entity.User;
@@ -12,9 +15,11 @@ import com.backend.ecommerce.exception.UserNotFoundException;
 import com.backend.ecommerce.repository.EmailService;
 import com.backend.ecommerce.repository.UserRepository;
 //import com.backend.ecommerce.security.JwtService;
+import com.backend.ecommerce.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,24 +30,24 @@ import java.util.Objects;
 public class UserServiceImplementation implements com.backend.ecommerce.service.UserService {
 
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final CustomModelMapper customModelMapper;
     private final EmailService emailService;
-//    private final JwtService jwtService;
+    private final JwtService jwtService;
 
 
-//    public AuthenticationResponse createUser (RegisterRequest request) {
-//        var user = User.builder()
-//                .firstName(request.getFirstName())
-//                .lastName(request.getLastName())
-//                .email(request.getEmail())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.ADMIN)
-//                .build();
-//        User savedUser = userRepository.save(user);
-//        UserDTO userDTO = customModelMapper.apply(savedUser);
-//        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
-//    }
+    public AuthenticationResponse createUser (RegisterRequest request) {
+        var user = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ADMIN)
+                .build();
+        User savedUser = userRepository.save(user);
+        UserDTO userDTO = customModelMapper.apply(savedUser);
+        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
+    }
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -100,12 +105,12 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
         return customModelMapper.apply(userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with the " + email + " not found")));
     }
 
-//    public UserDTO register(UserDTO userDTO) {
-//        User user = customModelMapper.reverse(userDTO);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        User savedUser = userRepository.save(user);
-//        return customModelMapper.apply(savedUser);
-//    }
+    public UserDTO register(UserDTO userDTO) {
+        User user = customModelMapper.reverse(userDTO);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(user);
+        return customModelMapper.apply(savedUser);
+    }
 
     public UserDTO login(String email, String password) {
         User user = userRepository.findByEmail(email).get();

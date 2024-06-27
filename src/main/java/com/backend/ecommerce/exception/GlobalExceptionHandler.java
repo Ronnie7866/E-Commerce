@@ -28,4 +28,9 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleUserNotFoundException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+
+    @ExceptionHandler(UserHasNoRoleException.class)
+    public ProblemDetail handleUserHasNoRoleException(Exception exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
 }
