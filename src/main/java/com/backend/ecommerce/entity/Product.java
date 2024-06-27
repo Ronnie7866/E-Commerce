@@ -42,9 +42,7 @@ public class Product {
     @JsonManagedReference
     private List<ProductImageTable> productImages = new ArrayList<>();
 
-
-
-//    @OneToMany
-//    private List<Long> productImageIds = new ArrayList<>();
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Inventory inventory;
 }
 

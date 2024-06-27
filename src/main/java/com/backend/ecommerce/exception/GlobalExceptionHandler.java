@@ -38,4 +38,14 @@ public class GlobalExceptionHandler {
     public ProblemDetail handlePasswordDidNotMatch(Exception exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
+
+    @ExceptionHandler(InventoryNotFoundException.class)
+    public ProblemDetail handleInventoryNotFoundException(Exception exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ProblemDetail handleInsufficientStockException(Exception exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
 }
