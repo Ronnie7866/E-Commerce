@@ -44,5 +44,8 @@ public class Product {
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Inventory inventory;
+
+    @OneToMany
+    private List<ProductReview> productReview;
 }
 

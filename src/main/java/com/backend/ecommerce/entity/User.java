@@ -59,12 +59,15 @@ public class User implements UserDetails {
     @JsonIgnore
     private Cart cart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // TODO getting error when change eager to lazy
     @JsonManagedReference
     private List<Transaction> transaction = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
     private ForgotPassword forgotPassword;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductReview> productReview;
 
     public User(String firstName, String lastName, String email, Long defaultPhoneNumber, List<Address> addressList) {
         this.firstName = firstName;

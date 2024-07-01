@@ -48,4 +48,9 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleInsufficientStockException(Exception exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
+
+    @ExceptionHandler(ProductReviewNotFoundException.class)
+    public ProblemDetail handleProductReviewNotFoundException(Exception exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
 }
