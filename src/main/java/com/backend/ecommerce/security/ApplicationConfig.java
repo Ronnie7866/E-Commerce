@@ -26,8 +26,8 @@ public class ApplicationConfig {
         return new UserDetailsService() {
 
             @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("No User Exists with this Email ID"));
+            public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+                return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("No User Exists with this Email ID"));
             }
         };
     }

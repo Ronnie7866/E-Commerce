@@ -23,18 +23,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String[] exceptionApisArray = AppConstants.EXCEPTION_APIS.toArray(new String[0]);
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/inventory/**").permitAll()
-                        .requestMatchers("/forgotPassword/**").permitAll()
-                        .requestMatchers("/v2/api-docs/").permitAll()
-                        .requestMatchers("/swagger-resources/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/webjars/**").permitAll()
-//                        .requestMatchers(exceptionApisArray).permitAll()
+//                        .requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers("/api/users/**").permitAll()
+//                                .requestMatchers("/api/products/**").permitAll()
+//                        .requestMatchers("/api/inventory/**").permitAll()
+//                        .requestMatchers("/forgotPassword/**").permitAll()
+//                        .requestMatchers("/v2/api-docs/").permitAll()
+//                        .requestMatchers("/swagger-resources/**").permitAll()
+//                        .requestMatchers("/swagger-ui/**").permitAll()
+//                        .requestMatchers("/webjars/**").permitAll()
+                                .requestMatchers(AppConstants.EXCEPTION_APIS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))

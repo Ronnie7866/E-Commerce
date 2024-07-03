@@ -4,6 +4,7 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.entity.Category;
 import com.backend.ecommerce.service.CategoryService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<Category> addCategory(@RequestBody Category category) {
         Category category1 = categoryService.create(category);
-        return ResponseEntity.ok(category1);
+        return new ResponseEntity<>(category1, HttpStatus.CREATED);
     }
 
     @GetMapping
