@@ -4,7 +4,7 @@ import com.backend.ecommerce.authentication.AuthenticationRequest;
 import com.backend.ecommerce.authentication.AuthenticationResponse;
 import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.implementation.AuthenticationService;
-import com.backend.ecommerce.security.JwtService;
+import com.backend.ecommerce.security.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,15 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final JwtService jwtService;
+    private final JWTService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        System.out.println("Entered register request");
         return ResponseEntity.ok(authenticationService.register(request));
+
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+
     }
 }

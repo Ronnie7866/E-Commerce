@@ -14,10 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -51,12 +51,12 @@ public class User implements UserDetails {
     @JsonManagedReference
     private Order order;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Address> addressList = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonManagedReference
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // TODO getting error when change eager to lazy
@@ -64,10 +64,11 @@ public class User implements UserDetails {
     private List<Transaction> transaction = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
+    @JsonManagedReference
     private ForgotPassword forgotPassword;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProductReview> productReview;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<ProductReview> productReview;
 
     public User(String firstName, String lastName, String email, Long defaultPhoneNumber, List<Address> addressList) {
         this.firstName = firstName;
@@ -77,28 +78,21 @@ public class User implements UserDetails {
         this.addressList = addressList;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", cart=" + (cart == null ? null : cart) +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", email='" + email + '\'' +
+//                ", password='" + password + '\'' +
+//                ", cart=" + (cart == null ? null : cart) +
+//                '}';
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == null) {
-            try {
-                throw new UserHasNoRoleException("User has no role");
-            } catch (UserHasNoRoleException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
 
     @Override
@@ -110,6 +104,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

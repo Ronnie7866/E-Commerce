@@ -4,16 +4,18 @@ import com.backend.ecommerce.authentication.AuthenticationRequest;
 import com.backend.ecommerce.authentication.AuthenticationResponse;
 import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.CustomModelMapper;
-import com.backend.ecommerce.records.UserDTO;
-import com.backend.ecommerce.enums.Role;
+import com.backend.ecommerce.dto.EmailDetails;
 import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.enums.Role;
+import com.backend.ecommerce.exception.DuplicateEntryException;
+import com.backend.ecommerce.records.UserDTO;
 import com.backend.ecommerce.repository.UserRepository;
-import com.backend.ecommerce.security.JwtService;
+import com.backend.ecommerce.security.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,12 +23,19 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
     private final CustomModelMapper customModelMapper;
+    private final EmailServiceImplementation emailService;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        // Check if mail already exists
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new DuplicateEntryException("Email already exists");
+        }
+
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -34,16 +43,29 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ADMIN)
                 .build();
+
         User savedUser = userRepository.save(user);
+
+        // Send email notification to the user
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(savedUser.getEmail())
+                .subject("Account Creation")
+                .messageBody("Congratulations! You have successfully created your account!")
+                .build();
+        emailService.sendEmailAlert(emailDetails);
+
+        // Generate JWT token
+        String token = jwtService.generateToken(savedUser.getEmail());
+
         UserDTO userDTO = customModelMapper.apply(savedUser);
-        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
-        //[TODO] return user
+
+        return new AuthenticationResponse(token, userDTO);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         doAuthenticate(request.getEmail(), request.getPassword());
         var user = userRepository.findByEmail(request.getEmail()).get();
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user.getEmail());
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
@@ -51,7 +73,7 @@ public class AuthenticationService {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
         try {
             authenticationManager.authenticate(authentication);
-        } catch (org.springframework.security.authentication.BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid Password");
         }
     }

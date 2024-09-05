@@ -11,6 +11,7 @@ import com.backend.ecommerce.repository.UserRepository;
 import com.backend.ecommerce.service.ForgotPasswordService;
 import com.backend.ecommerce.records.ChangePassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +26,13 @@ public class ForgotPasswordServiceImplementation implements ForgotPasswordServic
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final ForgotPasswordRepository forgotPasswordRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public ForgotPasswordServiceImplementation(EmailService emailService, UserRepository userRepository, ForgotPasswordRepository forgotPasswordRepository, PasswordEncoder passwordEncoder) {
+    public ForgotPasswordServiceImplementation(EmailService emailService, UserRepository userRepository, ForgotPasswordRepository forgotPasswordRepository ) {
         this.emailService = emailService;
         this.userRepository = userRepository;
         this.forgotPasswordRepository = forgotPasswordRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

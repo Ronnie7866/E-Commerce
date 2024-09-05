@@ -1,6 +1,9 @@
 
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.authentication.AuthenticationResponse;
+import com.backend.ecommerce.entity.User;
+import com.backend.ecommerce.implementation.UserServiceImplementation;
 import com.backend.ecommerce.records.UserDTO;
 import com.backend.ecommerce.repository.CartProductsRepository;
 import com.backend.ecommerce.service.UserService;
@@ -15,14 +18,14 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImplementation userService;
     private final CartProductsRepository cartProductsRepository;
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO user = userService.createUser(userDTO);
-        return ResponseEntity.ok(user);
-    }
+//    @PostMapping
+//    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+//        UserDTO user = userService.createUser(userDTO);
+//        return ResponseEntity.ok(user);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
@@ -57,15 +60,16 @@ public class UserController {
     }
 
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO) {
-//        UserDTO savedUser = userService.register(userDTO);
-//        return ResponseEntity.ok(savedUser);
-//    }
+    @PostMapping("/signup")
+    public String signup(@RequestBody User user) {
+        System.out.println("Entered signup");
+        userService.register(user);
+        System.out.println("Going to UserServiceImplementation");
+        return "token generated";
+    }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<UserDTO> login(@RequestParam String email, @RequestParam String password) {
-//        userService.login(email, password);
-//        return ResponseEntity.ok(userService.getUserByEmail(email));
-//    }
+    @PostMapping("/login")
+    public String login(@RequestParam String email, @RequestParam String password) {
+        return userService.login(email, password);
+    }
 }

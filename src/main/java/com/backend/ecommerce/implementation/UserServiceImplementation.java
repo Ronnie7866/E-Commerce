@@ -2,67 +2,78 @@
 package com.backend.ecommerce.implementation;
 
 import com.backend.ecommerce.authentication.AuthenticationResponse;
-import com.backend.ecommerce.authentication.RegisterRequest;
 import com.backend.ecommerce.dto.CustomModelMapper;
 import com.backend.ecommerce.dto.EmailDetails;
 import com.backend.ecommerce.records.UserDTO;
-//import com.backend.ecommerce.enums.Role;
-import com.backend.ecommerce.enums.Role;
 import com.backend.ecommerce.exception.DuplicateEntryException;
 import com.backend.ecommerce.entity.User;
 import com.backend.ecommerce.exception.UserNotFoundException;
 import com.backend.ecommerce.repository.EmailService;
 import com.backend.ecommerce.repository.UserRepository;
-//import com.backend.ecommerce.security.JwtService;
-import com.backend.ecommerce.security.JwtService;
-import lombok.AllArgsConstructor;
+import com.backend.ecommerce.security.JWTService;
+import com.backend.ecommerce.service.UserService;
 import org.springframework.beans.BeanUtils;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
-public class UserServiceImplementation implements com.backend.ecommerce.service.UserService {
+public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final CustomModelMapper customModelMapper;
     private final EmailService emailService;
-    private final JwtService jwtService;
+    private final JWTService jwtService;
+    private final AuthenticationManager authenticationManager;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public AuthenticationResponse createUser (RegisterRequest request) {
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ADMIN)
-                .build();
-        User savedUser = userRepository.save(user);
-        UserDTO userDTO = customModelMapper.apply(savedUser);
-        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
+    @Autowired
+    public UserServiceImplementation(UserRepository userRepository, CustomModelMapper customModelMapper, EmailService emailService, JWTService jwtService, @Qualifier("authenticationManager") AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.customModelMapper = customModelMapper;
+        this.emailService = emailService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
-    @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        if (!userRepository.existsByEmail(userDTO.email())) {
-            User user = customModelMapper.reverse(userDTO);
-            User savedUser = userRepository.save(user);
-            EmailDetails emailDetails = EmailDetails.builder()
-                    .recipient(savedUser.getEmail())
-                    .subject("Account Creation")
-                    .messageBody("Congratulations! You have successfully created your account!")
-                    .build();
-            emailService.sendEmailAlert(emailDetails);
-            return customModelMapper.apply(userRepository.save(savedUser));
-        }
-        throw new DuplicateEntryException("Email already exists");
-    }
+//    public AuthenticationResponse createUser (RegisterRequest request) {
+//        var user = User.builder()
+//                .firstName(request.getFirstName())
+//                .lastName(request.getLastName())
+//                .email(request.getEmail())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .role(Role.ADMIN)
+//                .build();
+//        User savedUser = userRepository.save(user);
+//        UserDTO userDTO = customModelMapper.apply(savedUser);
+//        return new AuthenticationResponse(jwtService.generateToken(savedUser), userDTO);
+//    }
+
+//    @Override
+//    public UserDTO createUser(UserDTO userDTO) {
+//        if (!userRepository.existsByEmail(userDTO.email())) {
+//            User user = customModelMapper.reverse(userDTO);
+//            User savedUser = userRepository.save(user);
+//            EmailDetails emailDetails = EmailDetails.builder()
+//                    .recipient(savedUser.getEmail())
+//                    .subject("Account Creation")
+//                    .messageBody("Congratulations! You have successfully created your account!")
+//                    .build();
+//            emailService.sendEmailAlert(emailDetails);
+//            return customModelMapper.apply(userRepository.save(savedUser));
+//        }
+//        throw new DuplicateEntryException("Email already exists");
+//    }
 
     @Override
     public UserDTO getUserById(Long id) {
@@ -104,20 +115,49 @@ public class UserServiceImplementation implements com.backend.ecommerce.service.
         return customModelMapper.apply(userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with the " + email + " not found")));
     }
 
-    public UserDTO register(UserDTO userDTO) {
-        User user = customModelMapper.reverse(userDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        return customModelMapper.apply(savedUser);
+
+    public ResponseEntity<?> register(User user) {
+        System.out.println("Entering function");
+
+        if (!userRepository.existsByEmail(user.getEmail())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            User savedUser = userRepository.save(user);
+            System.out.println("User saved to the database");
+
+            EmailDetails emailDetails = EmailDetails.builder()
+                    .recipient(savedUser.getEmail())
+                    .subject("Account Creation")
+                    .messageBody("Congratulations! You have successfully created your account!")
+                    .build();
+            emailService.sendEmailAlert(emailDetails);
+
+            System.out.println("Password : " + user.getPassword());
+
+            String token = jwtService.generateToken(savedUser.getEmail());
+            System.out.println(token);
+            return ResponseEntity.ok(new AuthenticationResponse(token, customModelMapper.apply(savedUser)));
+        } else {
+
+            throw new DuplicateEntryException("Email already exists");
+        }
     }
 
-    public UserDTO login(String email, String password) {
-        User user = userRepository.findByEmail(email).get();
-        if (user.getPassword().equals(password)) {
-            return customModelMapper.apply(user);
-        } else {
-            throw new RuntimeException("Wrong Password");
+
+    public String login(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with this email : " + email));
+
+//        if (user.getPassword().equals(password)) {
+//            return customModelMapper.apply(user);
+//        } else {
+//            throw new RuntimeException("Wrong Password");
+//        }
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(email);
         }
+        return "fail";
     }
 
     private boolean isCustomerExists(Long id) {
